@@ -13,6 +13,8 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    outputs:
+      url: ${{ steps.deploy.outputs.page_url }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -23,6 +25,18 @@ jobs:
           path: .
 
       - name: Deploy to GitHub Pages
+        id: deploy
         uses: actions/deploy-pages@v4
         with:
           artifact_name: github-pages
+          error_pages: true
+          error_pages: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Display deployment URL
+        run: |
+          echo "::notice title=Deployment Successful::"
+          echo "::notice::The game is now live at: https://cy-the-ai.github.io/kid-game-studio/ ::"
+          echo "::set-output name=url::https://cy-the-ai.github.io/kid-game-studio/"
+          echo "🌟 Game URL: https://cy-the-ai.github.io/kid-game-studio/"
+          echo "🎮 Reading Adventure: https://cy-the-ai.github.io/kid-game-studio/reading-adventure/"
