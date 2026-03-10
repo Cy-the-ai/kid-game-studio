@@ -17,19 +17,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-        with:
-          static_site_generator: next
-          source_dir: ./
-          output_dir: ./
-        id: pages
-
       - name: Upload to GitHub Pages
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./
-          upload_depth: 1
+          path: .
 
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
