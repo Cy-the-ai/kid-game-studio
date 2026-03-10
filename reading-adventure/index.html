@@ -214,6 +214,24 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
+        .counting-scene, .abc-scene, .word-pool {
+            position: relative;
+            overflow: hidden;
+            min-height: 350px;
+            max-height: 450px;
+        }
+        .counting-object {
+            position: relative;
+            display: inline-block;
+        }
+        .counting-object span {
+            display: block;
+        }
+        .game-container {
+            position: relative;
+            overflow: hidden;
+            min-height: 400px;
+        }
     </style>
 </head>
 <body>
@@ -542,18 +560,35 @@
 
             const scene = document.getElementById('abc-scene');
             scene.innerHTML = '';
+            scene.style.position = 'relative';
 
-            // Add decorations
+            // Create decorations container
+            const decoContainer = document.createElement('div');
+            decoContainer.style.display = 'flex';
+            decoContainer.style.flexWrap = 'wrap';
+            decoContainer.style.justifyContent = 'space-around';
+            decoContainer.style.alignItems = 'center';
+            decoContainer.style.padding = '20px';
+
+            // Add decorations using flexbox
             for (let i = 0; i < 8; i++) {
-                const deco = document.createElement('span');
+                const deco = document.createElement('div');
                 deco.className = 'counting-object';
                 deco.textContent = decorations[Math.floor(Math.random() * decorations.length)];
                 deco.style.fontSize = '2rem';
-                deco.style.left = Math.random() * 80 + 10 + '%';
-                deco.style.top = Math.random() * 80 + 10 + '%';
-                deco.style.position = 'absolute';
-                scene.appendChild(deco);
+                deco.style.margin = '10px';
+                decoContainer.appendChild(deco);
             }
+            scene.appendChild(decoContainer);
+
+            // Create letters container
+            const lettersContainer = document.createElement('div');
+            lettersContainer.style.display = 'flex';
+            lettersContainer.style.justifyContent = 'center';
+            lettersContainer.style.alignItems = 'center';
+            lettersContainer.style.gap = '30px';
+            lettersContainer.style.marginTop = '40px';
+            lettersContainer.style.position = 'relative';
 
             // Add target letter and 3 distractors
             const letters = [letter];
@@ -564,25 +599,24 @@
                 }
             }
 
-            // Shuffle and place letters
-            letters.sort(() => Math.random() - 0.5);
             letters.forEach((l, i) => {
                 const letterEl = document.createElement('div');
-                letterEl.className = 'word-tile';
-                letterEl.style.position = 'absolute';
-                letterEl.style.left = (10 + i * 22) + '%';
-                letterEl.style.top = Math.random() * 60 + 20 + '%';
+                letterEl.className = `word-tile ${l === letter ? 'target-letter' : ''}`;
                 letterEl.textContent = l;
+                letterEl.style.position = 'relative';
+                letterEl.style.transform = 'none';
 
                 if (l === letter) {
                     letterEl.onclick = () => handleABCCorrect(letterEl);
+                    letterEl.style.borderColor = '#28a745';
                 } else {
                     letterEl.onclick = () => handleABCWrong(letterEl);
                 }
 
-                scene.appendChild(letterEl);
+                lettersContainer.appendChild(letterEl);
             });
 
+            scene.appendChild(lettersContainer);
             document.getElementById('abc-score').textContent = `${abcIndex + 1} / 26`;
             document.getElementById('progress-1').style.width = ((abcIndex + 1) / 26 * 100) + '%';
 
@@ -628,16 +662,24 @@
             const scene = document.getElementById('counting-scene');
             scene.innerHTML = '';
 
+            // Create objects container using flexbox
+            const objectsContainer = document.createElement('div');
+            objectsContainer.style.display = 'flex';
+            objectsContainer.style.flexWrap = 'wrap';
+            objectsContainer.style.justifyContent = 'center';
+            objectsContainer.style.alignItems = 'center';
+            objectsContainer.style.gap = '20px';
+            objectsContainer.style.padding = '30px';
+            scene.appendChild(objectsContainer);
+
+            // Add objects using flexbox
             for (let i = 0; i < countTarget; i++) {
-                const obj = document.createElement('span');
+                const obj = document.createElement('div');
                 obj.className = 'counting-object';
                 obj.textContent = countingObjects[Math.floor(Math.random() * countingObjects.length)];
-                obj.style.left = Math.random() * 80 + 10 + '%';
-                obj.style.top = Math.random() * 60 + 20 + '%';
-                obj.style.position = 'absolute';
-                obj.style.animationDelay = (i * 0.3) + 's';
+                obj.style.margin = '10px';
                 obj.onclick = () => handleCount(obj);
-                scene.appendChild(obj);
+                objectsContainer.appendChild(obj);
             }
 
             speak(`Count ${countTarget} objects!`);
