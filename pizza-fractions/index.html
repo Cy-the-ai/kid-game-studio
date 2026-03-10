@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pizza Fractions 🍕</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(180deg, #FFF3E0 0%, #FFE0B2 50%, #FFCC80 100%);
+            min-height: 100vh;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+        }
+        .pizza-container {
+            position: relative;
+            width: 350px;
+            height: 350px;
+            margin: 0 auto;
+        }
+        .pizza {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: #FFB74D;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border: 8px solid #D84315;
+        }
+        .slice {
+            position: absolute;
+            width: 50%;
+            height: 50%;
+            left: 50%;
+            top: 50%;
+            transform-origin: 0 0;
+            border: 2px solid #D84315;
+            box-sizing: border-box;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .slice:hover {
+            filter: brightness(1.2);
+            transform: scale(1.05) rotate(var(--rotation));
+        }
+        .slice.selected {
+            filter: brightness(1.3);
+            box-shadow: 0 0 20px #FFD700;
+        }
+        .slice-2 {
+            background: #FFB74D;
+            clip-path: polygon(100% 0%, 100% 100%, 0% 0%);
+        }
+        .slice-3 {
+            background: #FFA726;
+            clip-path: polygon(100% 0%, 100% 100%, 0% 0%);
+        }
+        .slice-4 {
+            background: #FF9800;
+            clip-path: polygon(100% 0%, 100% 100%, 0% 0%);
+        }
+        .slice-6 {
+            background: #FB8C00;
+            clip-path: polygon(100% 0%, 100% 100%, 0% 0%);
+        }
+        .slice-8 {
+            background: #F57C00;
+            clip-path: polygon(100% 0%, 100% 100%, 0% 0%);
+        }
+        .topping {
+            position: absolute;
+            font-size: 1.2rem;
+            pointer-events: none;
+        }
+        .btn-pizza {
+            background: linear-gradient(45deg, #FF6B6B, #FF8E53);
+            border: 3px solid #D84315;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+            border-radius: 30px;
+            padding: 15px 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transition: all 0.3s;
+        }
+        .btn-pizza:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        }
+        .fraction-btn {
+            min-width: 100px;
+            font-size: 2.5rem;
+            padding: 20px 30px;
+            margin: 10px;
+        }
+        .fraction-btn.selected {
+            background: #4CAF50 !important;
+            border-color: #2E7D32 !important;
+            transform: scale(1.1);
+        }
+        .score-panel {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .question-display {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #D84315;
+        }
+        .pizza-title {
+            color: #D84315;
+            text-shadow: 2px 2px 0 #FFD700;
+        }
+        .message-box {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-3">
+        <div class="text-center mb-3">
+            <h1 class="display-4 pizza-title">
+                <i class="fas fa-pizza-slice me-3"></i>Pizza Fractions
+            </h1>
+            <p class="lead">Learn fractions with delicious pizza!</p>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <div class="score-panel text-center">
+                    <h5><i class="fas fa-question-circle text-primary"></i> Question</h5>
+                    <div class="question-display" id="question">Click a fraction to start!</div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="score-panel text-center">
+                    <h5><i class="fas fa-star text-warning"></i> Score</h5>
+                    <div class="display-4" id="score">0</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mb-3">
+            <h4 class="mb-3">Select a Fraction:</h4>
+            <div class="d-flex justify-content-center flex-wrap">
+                <button class="btn btn-outline-danger fraction-btn" onclick="selectFraction(2)">½</button>
+                <button class="btn btn-outline-danger fraction-btn" onclick="selectFraction(3)">⅓</button>
+                <button class="btn btn-outline-danger fraction-btn" onclick="selectFraction(4)">¼</button>
+                <button class="btn btn-outline-danger fraction-btn" onclick="selectFraction(6)">⅙</button>
+                <button class="btn btn-outline-danger fraction-btn" onclick="selectFraction(8)">⅛</button>
+            </div>
+        </div>
+
+        <div class="pizza-container mb-3">
+            <div class="pizza" id="pizza"></div>
+        </div>
+
+        <div class="text-center mb-3">
+            <button class="btn btn-pizza" onclick="checkAnswer()">
+                <i class="fas fa-check me-2"></i>Check Answer
+            </button>
+            <button class="btn btn-pizza" onclick="resetGame()">
+                <i class="fas fa-redo me-2"></i>New Pizza
+            </button>
+        </div>
+
+        <div id="message" class="text-center mt-3 message-box text-success"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let currentFraction = 0;
+        let selectedSlices = [];
+        let score = 0;
+        let gameActive = false;
+
+        const toppings = ['🍕', '🧀', '🍅', '🫒', '🌶️', '🍄'];
+
+        function selectFraction(fraction) {
+            currentFraction = fraction;
+            gameActive = true;
+            selectedSlices = [];
+
+            document.querySelectorAll('.fraction-btn').forEach(btn => btn.classList.remove('selected'));
+            event.target.classList.add('selected');
+
+            document.getElementById('question').textContent = `Select ${fraction}/${fraction} of the pizza`;
+            document.getElementById('message').textContent = '';
+            document.getElementById('pizza').innerHTML = '';
+
+            createPizza(fraction);
+            speak(`Select ${fraction} out of ${fraction} slices`);
+        }
+
+        function createPizza(fraction) {
+            const pizza = document.getElementById('pizza');
+            const sliceAngle = 360 / fraction;
+
+            for (let i = 0; i < fraction; i++) {
+                const slice = document.createElement('div');
+                slice.className = `slice slice-${fraction}`;
+                slice.style.setProperty('--rotation', `${i * sliceAngle}deg`);
+                slice.style.transform = `rotate(${i * sliceAngle}deg)`;
+                slice.dataset.index = i;
+                slice.onclick = () => toggleSlice(slice, i);
+
+                // Add toppings
+                for (let j = 0; j < 3; j++) {
+                    const topping = document.createElement('span');
+                    topping.className = 'topping';
+                    topping.textContent = toppings[Math.floor(Math.random() * toppings.length)];
+                    topping.style.left = `${20 + Math.random() * 60}%`;
+                    topping.style.top = `${20 + Math.random() * 60}%`;
+                    topping.style.transform = `rotate(${Math.random() * 360}deg)`;
+                    slice.appendChild(topping);
+                }
+
+                pizza.appendChild(slice);
+            }
+        }
+
+        function toggleSlice(slice, index) {
+            if (!gameActive) return;
+
+            if (slice.classList.contains('selected')) {
+                slice.classList.remove('selected');
+                selectedSlices = selectedSlices.filter(i => i !== index);
+            } else {
+                if (selectedSlices.length < currentFraction) {
+                    slice.classList.add('selected');
+                    selectedSlices.push(index);
+                }
+            }
+        }
+
+        function checkAnswer() {
+            if (!gameActive || currentFraction === 0) {
+                alert('Please select a fraction first!');
+                return;
+            }
+
+            if (selectedSlices.length === 0) {
+                speak('Select some slices first');
+                return;
+            }
+
+            const correctFraction = document.getElementById('question').textContent.match(/(\d+)\/(\d+)/);
+            if (!correctFraction) return;
+
+            const numerator = parseInt(correctFraction[1]);
+            const denominator = parseInt(correctFraction[2]);
+
+            if (selectedSlices.length === numerator) {
+                score += 20;
+                document.getElementById('score').textContent = score;
+                document.getElementById('message').textContent = '🎉 Correct! Delicious!';
+                speak('Correct! Delicious!');
+
+                setTimeout(() => {
+                    document.getElementById('message').textContent = '';
+                    // Generate new question
+                    const newNumerator = Math.floor(Math.random() * (currentFraction - 1)) + 1;
+                    document.getElementById('question').textContent = `Select ${newNumerator}/${currentFraction} of the pizza`;
+                    selectedSlices = [];
+                    document.querySelectorAll('.slice').forEach(s => s.classList.remove('selected'));
+                    speak(`Select ${newNumerator} out of ${currentFraction} slices`);
+                }, 2000);
+            } else {
+                document.getElementById('message').textContent = '❌ Try again! Count the slices';
+                speak('Try again! Count the slices');
+            }
+        }
+
+        function resetGame() {
+            gameActive = false;
+            currentFraction = 0;
+            selectedSlices = [];
+            document.getElementById('score').textContent = '0';
+            document.getElementById('question').textContent = 'Click a fraction to start!';
+            document.getElementById('message').textContent = '';
+            document.getElementById('pizza').innerHTML = '';
+            document.querySelectorAll('.fraction-btn').forEach(btn => btn.classList.remove('selected'));
+        }
+
+        function speak(text) {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.rate = 0.8;
+                utterance.pitch = 1.2;
+                speechSynthesis.speak(utterance);
+            }
+        }
+    </script>
+</body>
+</html>

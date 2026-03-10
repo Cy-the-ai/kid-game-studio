@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reading Adventure 🌟</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+        }
+        .game-container {
+            background: white;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 30px;
+        }
+        .level-card {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border-radius: 20px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 4px solid transparent;
+        }
+        .level-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border-color: #FFD700;
+        }
+        .level-card.locked {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);
+        }
+        .star {
+            font-size: 2rem;
+            color: #FFD700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .star.empty {
+            color: #ccc;
+            text-shadow: none;
+        }
+        .letter-display {
+            font-size: 8rem;
+            font-weight: bold;
+            color: #667eea;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.2);
+            animation: bounce 0.5s;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+        .counting-object {
+            font-size: 3rem;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.3s;
+            animation: float 3s ease-in-out infinite;
+        }
+        .counting-object:hover {
+            transform: scale(1.2);
+        }
+        .counting-object:active {
+            transform: scale(0.95);
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .word-tile {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: 4px solid #FFD700;
+            border-radius: 15px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            margin: 5px;
+        }
+        .word-tile:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+        .word-tile.selected {
+            opacity: 0.3;
+            pointer-events: none;
+        }
+        .word-slot {
+            width: 80px;
+            height: 80px;
+            background: #f0f0f0;
+            border: 4px dashed #ccc;
+            border-radius: 15px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #666;
+            margin: 5px;
+        }
+        .word-slot.filled {
+            border-style: solid;
+            border-color: #667eea;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            animation: bounce 0.3s;
+        }
+        .progress-bar {
+            height: 30px;
+            background: #f0f0f0;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transition: width 0.5s;
+        }
+        .btn-adventure {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border: 3px solid #FFD700;
+            color: white;
+            font-weight: bold;
+            font-size: 1.3rem;
+            border-radius: 30px;
+            padding: 15px 40px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transition: all 0.3s;
+        }
+        .btn-adventure:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        }
+        .celebration {
+            font-size: 4rem;
+            animation: celebrate 0.5s;
+        }
+        @keyframes celebrate {
+            0% { transform: scale(0) rotate(0deg); }
+            50% { transform: scale(1.5) rotate(10deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+        .confetti {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+        }
+        .confetti-piece {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            animation: confetti-fall 3s linear forwards;
+        }
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+        .sticker {
+            font-size: 4rem;
+            animation: sticker-pop 0.5s;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .sticker:hover {
+            transform: scale(1.2);
+        }
+        @keyframes sticker-pop {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+        .reward-badge {
+            font-size: 3rem;
+            animation: badge-shine 1s;
+        }
+        @keyframes badge-shine {
+            0% { transform: scale(1) rotate(-10deg); }
+            50% { transform: scale(1.2) rotate(10deg); }
+            100% { transform: scale(1) rotate(-10deg); }
+        }
+        .sticker-book {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .adventure-title {
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-4">
+        <!-- Main Menu -->
+        <div id="main-menu" class="game-container">
+            <div class="text-center mb-4">
+                <h1 class="display-3 adventure-title">
+                    <i class="fas fa-star me-3"></i>Reading Adventure
+                </h1>
+                <p class="lead text-muted">Learn to read, one letter at a time!</p>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="score-panel text-center p-3 bg-light rounded-3">
+                        <h5><i class="fas fa-trophy text-warning"></i> Total Stars</h5>
+                        <div class="display-4" id="total-stars">0</div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="score-panel text-center p-3 bg-light rounded-3">
+                        <h5><i class="fas fa-medal text-primary"></i> Current Level</h5>
+                        <div class="display-4" id="current-level">1</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <div class="level-card text-center text-white" onclick="startLevel(1)">
+                        <div class="mb-2"><i class="fas fa-font text-5xl"></i></div>
+                        <h4>Level 1</h4>
+                        <p class="small mb-2">Learn Your ABCs</p>
+                        <div id="level-1-stars">
+                            <span class="star empty">☆</span>
+                            <span class="star empty">☆</span>
+                            <span class="star empty">☆</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="level-card text-center text-white" onclick="startLevel(2)">
+                        <div class="mb-2"><i class="fas fa-hashtag text-5xl"></i></div>
+                        <h4>Level 2</h4>
+                        <p class="small mb-2">Count with Me</p>
+                        <div id="level-2-stars">
+                            <span class="star empty">☆</span>
+                            <span class="star empty">☆</span>
+                            <span class="star empty">☆</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="level-card text-center text-white" onclick="startLevel(3)">
+                        <div class="mb-2"><i class="fas fa-puzzle-piece text-5xl"></i></div>
+                        <h4>Level 3</h4>
+                        <p class="small mb-2">Build Simple Words</p>
+                        <div id="level-3-stars">
+                            <span class="star empty">☆</span>
+                            <span class="star empty">☆</span>
+                            <span class="star empty">☆</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Level 1: ABCs -->
+        <div id="level-1" class="game-container" style="display: none;">
+            <div class="text-center mb-4">
+                <button class="btn btn-secondary mb-3" onclick="showMenu()">
+                    <i class="fas fa-arrow-left me-2"></i>Back
+                </button>
+                <h2 class="adventure-title">🌟 Learn Your ABCs</h2>
+                <p class="lead">Find the letter!</p>
+            </div>
+
+            <div class="text-center mb-4">
+                <div class="letter-display" id="target-letter">A</div>
+            </div>
+
+            <div class="progress-bar mb-3">
+                <div class="progress-fill" id="progress-1" style="width: 0%"></div>
+            </div>
+
+            <div id="abc-scene" class="text-center" style="min-height: 300px; background: linear-gradient(180deg, #87CEEB, #90EE90); border-radius: 20px; padding: 20px;">
+                <!-- Letters will be generated here -->
+            </div>
+
+            <div class="text-center mt-4">
+                <div class="display-4" id="abc-score">0 / 26</div>
+            </div>
+        </div>
+
+        <!-- Level 2: Counting -->
+        <div id="level-2" class="game-container" style="display: none;">
+            <div class="text-center mb-4">
+                <button class="btn btn-secondary mb-3" onclick="showMenu()">
+                    <i class="fas fa-arrow-left me-2"></i>Back
+                </button>
+                <h2 class="adventure-title">🌟 Count with Me</h2>
+                <p class="lead">Tap the objects and count them!</p>
+            </div>
+
+            <div class="progress-bar mb-3">
+                <div class="progress-fill" id="progress-2" style="width: 0%"></div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="score-panel text-center p-3 bg-light rounded-3">
+                        <h5><i class="fas fa-bullseye text-primary"></i> Target</h5>
+                        <div class="display-4" id="count-target">5</div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="score-panel text-center p-3 bg-light rounded-3">
+                        <h5><i class="fas fa-hashtag text-success"></i> Counted</h5>
+                        <div class="display-4" id="current-count">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="counting-scene" class="text-center" style="min-height: 300px; background: linear-gradient(180deg, #FFB6C1, #87CEEB); border-radius: 20px; padding: 20px;">
+                <!-- Objects will be generated here -->
+            </div>
+
+            <div class="text-center mt-4">
+                <button class="btn btn-adventure" onclick="generateCountingRound()">
+                    <i class="fas fa-play me-2"></i>Next Round
+                </button>
+            </div>
+        </div>
+
+        <!-- Level 3: Word Building -->
+        <div id="level-3" class="game-container" style="display: none;">
+            <div class="text-center mb-4">
+                <button class="btn btn-secondary mb-3" onclick="showMenu()">
+                    <i class="fas fa-arrow-left me-2"></i>Back
+                </button>
+                <h2 class="adventure-title">🌟 Build Simple Words</h2>
+                <p class="lead">Put letters together to make words!</p>
+            </div>
+
+            <div class="progress-bar mb-3">
+                <div class="progress-fill" id="progress-3" style="width: 0%"></div>
+            </div>
+
+            <div class="score-panel text-center p-3 bg-light rounded-3 mb-4">
+                <h5><i class="fas fa-lightbulb text-warning"></i> Hint</h5>
+                <p class="lead" id="word-hint">Click Start to begin!</p>
+            </div>
+
+            <div class="text-center mb-3">
+                <div id="word-display" class="mb-3">
+                    <!-- Word slots will be here -->
+                </div>
+            </div>
+
+            <div id="letter-pool" class="text-center" style="min-height: 150px;">
+                <!-- Letter tiles will be here -->
+            </div>
+
+            <div class="text-center mt-4">
+                <div class="display-4" id="word-score">0 / 10</div>
+            </div>
+        </div>
+
+        <!-- Success Modal -->
+        <div class="modal fade" id="successModal" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content text-center">
+                    <div class="modal-body p-5">
+                        <div class="celebration mb-3">🎉</div>
+                        <h2 class="adventure-title mb-3">Amazing!</h2>
+                        <p class="lead mb-4" id="success-message">You earned a star!</p>
+                        <div class="mb-3" id="earned-stars">
+                            <span class="star">⭐</span>
+                        </div>
+                        <div class="reward-badge mb-4" id="reward-badge">
+                            🏆
+                        </div>
+                        <div class="mb-4" id="earned-sticker">
+                            <div class="sticker">🌟</div>
+                            <p class="text-muted small">You collected a sticker!</p>
+                        </div>
+                        <button class="btn btn-adventure me-2" onclick="closeModal()">
+                            <i class="fas fa-thumbs-up me-2"></i>Awesome!
+                        </button>
+                        <button class="btn btn-info me-2" onclick="showStickerBook()">
+                            <i class="fas fa-book me-2"></i>My Stickers
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sticker Book Modal -->
+        <div class="modal fade" id="stickerBookModal" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content text-center">
+                    <div class="modal-header bg-primary text-white">
+                        <h4 class="modal-title"><i class="fas fa-star me-2"></i>My Sticker Collection</h4>
+                        <button type="button" class="btn-close btn-close btn-close-white" onclick="closeStickerBook()">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body sticker-book">
+                        <div class="row" id="sticker-collection">
+                            <!-- Stickers will be generated here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Confetti Container -->
+        <div class="confetti" id="confetti"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Game State
+        let totalStars = parseInt(localStorage.getItem('readingAdventureStars')) || 0;
+        let levelStars = JSON.parse(localStorage.getItem('readingAdventureLevelStars')) || {1: 0, 2: 0, 3: 0};
+        let currentLevel = 1;
+
+        // Level 1: ABCs
+        let abcIndex = 0;
+        const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+        // Level 2: Counting
+        let count = 0;
+        let countTarget = 0;
+        let countingRound = 0;
+        const countingRounds = 5;
+
+        // Level 3: Word Building
+        const words = ['CAT', 'DOG', 'SUN', 'COW', 'FOX', 'FISH', 'BIRD', 'MOON', 'STAR', 'FROG'];
+        const wordHints = {
+            'CAT': 'A pet that says meow',
+            'DOG': "Man's best friend, barks",
+            'SUN': 'Bright star in the sky',
+            'COW': 'Moo! Farm animal',
+            'FOX': 'Clever orange animal',
+            'FISH': 'Swims in water',
+            'BIRD': 'Flies in the sky',
+            'MOON': 'Lights up the night',
+            'STAR': 'Twinkle, twinkle!',
+            'FROG': 'Green, jumps and croaks'
+        };
+        let currentWord = '';
+        let currentLetters = [];
+        let builtWord = '';
+        let wordIndex = 0;
+        const wordsPerLevel = 10;
+
+        // Fun elements for counting
+        const countingObjects = ['🌟', '🎈', '🌸', '🍎', '⭐', '🎀', '🦋', '🌈', '🍪', '🎁'];
+
+        // Decorative elements for ABC scene
+        const decorations = ['🌻', '🌿', '🦋', '🌸', '🍃', '🐦', '🌳'];
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            updateStars();
+        });
+
+        function updateStars() {
+            document.getElementById('total-stars').textContent = totalStars;
+            updateLevelStars();
+        }
+
+        function updateLevelStars() {
+            for (let level = 1; level <= 3; level++) {
+                const container = document.getElementById(`level-${level}-stars`);
+                const stars = levelStars[level] || 0;
+                container.innerHTML = '';
+                for (let i = 0; i < 3; i++) {
+                    const star = document.createElement('span');
+                    star.className = i < stars ? 'star' : 'star empty';
+                    star.textContent = i < stars ? '⭐' : '☆';
+                    container.appendChild(star);
+                }
+            }
+        }
+
+        function showMenu() {
+            document.getElementById('main-menu').style.display = 'block';
+            document.getElementById('level-1').style.display = 'none';
+            document.getElementById('level-2').style.display = 'none';
+            document.getElementById('level-3').style.display = 'none';
+            updateStars();
+        }
+
+        function startLevel(level) {
+            currentLevel = level;
+            document.getElementById('main-menu').style.display = 'none';
+            document.getElementById(`level-${level}`).style.display = 'block';
+            document.getElementById('current-level').textContent = level;
+
+            if (level === 1) {
+                initABCLevel();
+            } else if (level === 2) {
+                initCountingLevel();
+            } else if (level === 3) {
+                initWordLevel();
+            }
+        }
+
+        // ===== LEVEL 1: ABCs =====
+        function initABCLevel() {
+            abcIndex = 0;
+            showNextLetter();
+        }
+
+        function showNextLetter() {
+            if (abcIndex >= alphabet.length) {
+                completeLevel(1);
+                return;
+            }
+
+            const letter = alphabet[abcIndex];
+            document.getElementById('target-letter').textContent = letter;
+
+            const scene = document.getElementById('abc-scene');
+            scene.innerHTML = '';
+
+            // Add decorations
+            for (let i = 0; i < 8; i++) {
+                const deco = document.createElement('span');
+                deco.className = 'counting-object';
+                deco.textContent = decorations[Math.floor(Math.random() * decorations.length)];
+                deco.style.fontSize = '2rem';
+                deco.style.left = Math.random() * 80 + 10 + '%';
+                deco.style.top = Math.random() * 80 + 10 + '%';
+                deco.style.position = 'absolute';
+                scene.appendChild(deco);
+            }
+
+            // Add target letter and 3 distractors
+            const letters = [letter];
+            while (letters.length < 4) {
+                const randomLetter = alphabet[Math.floor(Math.random() * alphabet.length)];
+                if (!letters.includes(randomLetter)) {
+                    letters.push(randomLetter);
+                }
+            }
+
+            // Shuffle and place letters
+            letters.sort(() => Math.random() - 0.5);
+            letters.forEach((l, i) => {
+                const letterEl = document.createElement('div');
+                letterEl.className = 'word-tile';
+                letterEl.style.position = 'absolute';
+                letterEl.style.left = (10 + i * 22) + '%';
+                letterEl.style.top = Math.random() * 60 + 20 + '%';
+                letterEl.textContent = l;
+
+                if (l === letter) {
+                    letterEl.onclick = () => handleABCCorrect(letterEl);
+                } else {
+                    letterEl.onclick = () => handleABCWrong(letterEl);
+                }
+
+                scene.appendChild(letterEl);
+            });
+
+            document.getElementById('abc-score').textContent = `${abcIndex + 1} / 26`;
+            document.getElementById('progress-1').style.width = ((abcIndex + 1) / 26 * 100) + '%';
+
+            speak(`Find the letter ${letter}`);
+        }
+
+        function handleABCCorrect(letterEl) {
+            letterEl.style.background = 'linear-gradient(135deg, #28a745, #20c997)';
+            speak(letterEl.textContent);
+            abcIndex++;
+
+            setTimeout(() => {
+                showNextLetter();
+            }, 1000);
+        }
+
+        function handleABCWrong(letterEl) {
+            letterEl.style.transform = 'scale(1.3) rotate(10deg)';
+            setTimeout(() => {
+                letterEl.style.transform = 'scale(1) rotate(0deg)';
+            }, 300);
+            speak('Try again!');
+        }
+
+        // ===== LEVEL 2: Counting =====
+        function initCountingLevel() {
+            countingRound = 0;
+            generateCountingRound();
+        }
+
+        function generateCountingRound() {
+            if (countingRound >= countingRounds) {
+                completeLevel(2);
+                return;
+            }
+
+            count = 0;
+            countTarget = Math.floor(Math.random() * 5) + 1;
+            document.getElementById('count-target').textContent = countTarget;
+            document.getElementById('current-count').textContent = '0';
+            document.getElementById('progress-2').style.width = ((countingRound + 1) / countingRounds * 100) + '%';
+
+            const scene = document.getElementById('counting-scene');
+            scene.innerHTML = '';
+
+            for (let i = 0; i < countTarget; i++) {
+                const obj = document.createElement('span');
+                obj.className = 'counting-object';
+                obj.textContent = countingObjects[Math.floor(Math.random() * countingObjects.length)];
+                obj.style.left = Math.random() * 80 + 10 + '%';
+                obj.style.top = Math.random() * 60 + 20 + '%';
+                obj.style.position = 'absolute';
+                obj.style.animationDelay = (i * 0.3) + 's';
+                obj.onclick = () => handleCount(obj);
+                scene.appendChild(obj);
+            }
+
+            speak(`Count ${countTarget} objects!`);
+        }
+
+        function handleCount(obj) {
+            count++;
+            document.getElementById('current-count').textContent = count;
+            speak(count.toString());
+
+            obj.remove();
+
+            if (count === countTarget) {
+                countingRound++;
+                speak('Great job!');
+                setTimeout(() => {
+                    if (countingRound < countingRounds) {
+                        generateCountingRound();
+                    } else {
+                        completeLevel(2);
+                    }
+                }, 1500);
+            }
+        }
+
+        // ===== LEVEL 3: Word Building =====
+        function initWordLevel() {
+            wordIndex = 0;
+            showNextWord();
+        }
+
+        function showNextWord() {
+            if (wordIndex >= wordsPerLevel) {
+                completeLevel(3);
+                return;
+            }
+
+            currentWord = words[wordIndex % words.length];
+            currentLetters = currentWord.split('').sort(() => Math.random() - 0.5);
+            builtWord = '';
+
+            document.getElementById('word-hint').textContent = wordHints[currentWord];
+            document.getElementById('word-score').textContent = `${wordIndex + 1} / ${wordsPerLevel}`;
+            document.getElementById('progress-3').style.width = ((wordIndex + 1) / wordsPerLevel * 100) + '%';
+
+            // Create word slots
+            const display = document.getElementById('word-display');
+            display.innerHTML = '';
+            for (let i = 0; i < currentWord.length; i++) {
+                const slot = document.createElement('div');
+                slot.className = 'word-slot';
+                slot.textContent = '_';
+                display.appendChild(slot);
+            }
+
+            // Create letter pool
+            const pool = document.getElementById('letter-pool');
+            pool.innerHTML = '';
+            currentLetters.forEach((letter, i) => {
+                const tile = document.createElement('div');
+                tile.className = 'word-tile';
+                tile.textContent = letter;
+                tile.dataset.index = i;
+                tile.onclick = () => handleLetterClick(tile, letter);
+                pool.appendChild(tile);
+            });
+
+            speak(`Spell ${currentWord}`);
+        }
+
+        function handleLetterClick(tile, letter) {
+            if (tile.classList.contains('selected')) return;
+
+            builtWord += letter;
+            tile.classList.add('selected');
+
+            // Update word slots
+            const slots = document.querySelectorAll('.word-slot');
+            for (let i = 0; i < builtWord.length; i++) {
+                if (!slots[i].classList.contains('filled')) {
+                    slots[i].textContent = builtWord[i];
+                    slots[i].classList.add('filled');
+                    speak(letter);
+                    break;
+                }
+            }
+
+            if (builtWord.length === currentWord.length) {
+                checkWord();
+            }
+        }
+
+        function checkWord() {
+            if (builtWord === currentWord) {
+                wordIndex++;
+                speak('Excellent!');
+                setTimeout(() => {
+                    showNextWord();
+                }, 1500);
+            } else {
+                speak('Try again!');
+                setTimeout(() => {
+                    // Reset
+                    builtWord = '';
+                    const slots = document.querySelectorAll('.word-slot');
+                    slots.forEach(slot => {
+                        slot.textContent = '_';
+                        slot.classList.remove('filled');
+                    });
+                    const tiles = document.querySelectorAll('.word-tile');
+                    tiles.forEach(tile => tile.classList.remove('selected'));
+                }, 1000);
+            }
+        }
+
+        // ===== Shared Functions =====
+        function completeLevel(level) {
+            const earnedStars = levelStars[level] || 0;
+            if (earnedStars < 3) {
+                levelStars[level] = earnedStars + 1;
+                totalStars++;
+
+                localStorage.setItem('readingAdventureStars', totalStars);
+                localStorage.setItem('readingAdventureLevelStars', JSON.stringify(levelStars));
+
+                showSuccess(`Level ${level} Complete!`, 1);
+            } else {
+                showSuccess('All stars earned!', 3);
+            }
+
+            updateStars();
+        }
+
+        function showSuccess(message, stars) {
+            document.getElementById('success-message').textContent = message;
+            const starsContainer = document.getElementById('earned-stars');
+            starsContainer.innerHTML = '';
+            for (let i = 0; i < stars; i++) {
+                const star = document.createElement('span');
+                star.className = 'star';
+                star.textContent = '⭐';
+                star.style.animationDelay = (i * 0.2) + 's';
+                starsContainer.appendChild(star);
+            }
+
+            // Show reward badge
+            const badgeContainer = document.getElementById('reward-badge');
+            const badgeIndex = totalStars % rewardBadges.length;
+            badgeContainer.innerHTML = `<div class="reward-badge">${rewardBadges[badgeIndex]}</div>`;
+
+            // Show earned sticker
+            const stickerContainer = document.getElementById('earned-sticker');
+            const earnedSticker = getReward();
+            if (earnedSticker) {
+                stickerContainer.innerHTML = `
+                    <div class="sticker">${earnedSticker.emoji}</div>
+                    <p class="text-muted small">You collected: ${earnedSticker.name}!</p>
+                `;
+            } else {
+                stickerContainer.innerHTML = '';
+            }
+
+            // Launch confetti!
+            launchConfetti();
+
+            // Play celebration sound (if available)
+            speak('Amazing job! You did it!');
+
+            new bootstrap.Modal(document.getElementById('successModal')).show();
+        }
+
+        function closeModal() {
+            bootstrap.Modal.getInstance(document.getElementById('successModal')).hide();
+            showMenu();
+        }
+
+        function showStickerBook() {
+            bootstrap.Modal.getInstance(document.getElementById('successModal')).hide();
+            loadStickerCollection();
+            new bootstrap.Modal(document.getElementById('stickerBookModal')).show();
+        }
+
+        function closeStickerBook() {
+            bootstrap.Modal.getInstance(document.getElementById('stickerBookModal')).hide();
+            showMenu();
+        }
+
+        function loadStickerCollection() {
+            const collection = JSON.parse(localStorage.getItem('readingAdventureStickers')) || [];
+            const container = document.getElementById('sticker-collection');
+
+            if (collection.length === 0) {
+                container.innerHTML = '<p class="text-muted">No stickers yet! Complete levels to earn them!</p>';
+                return;
+            }
+
+            container.innerHTML = '';
+            collection.forEach((sticker, index) => {
+                const col = document.createElement('div');
+                col.className = 'col-4 col-md-3';
+                col.innerHTML = `
+                    <div class="sticker">
+                        ${sticker.emoji}
+                    </div>
+                    <p class="small text-muted">${sticker.name}</p>
+                `;
+                container.appendChild(col);
+            });
+        }
+
+        function launchConfetti() {
+            const confettiContainer = document.getElementById('confetti');
+            confettiContainer.innerHTML = '';
+
+            const colors = ['#FFD700', '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEEAD'];
+            const shapes = ['■', '●', '▲', '★', '♦'];
+
+            for (let i = 0; i < 100; i++) {
+                const piece = document.createElement('div');
+                piece.className = 'confetti-piece';
+                piece.style.left = Math.random() * 100 + '%';
+                piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                piece.style.animationDuration = (2 + Math.random() * 3) + 's';
+                piece.style.animationDelay = (Math.random() * 2) + 's';
+
+                confettiContainer.appendChild(piece);
+            }
+
+            setTimeout(() => {
+                confettiContainer.innerHTML = '';
+            }, 5000);
+        }
+
+        const rewardStickers = [
+            { emoji: '🌟', name: 'Super Star' },
+            { emoji: '🏆', name: 'Champion Trophy' },
+            { emoji: '🦋', name: 'Butterfly Friend' },
+            { emoji: '🌸', name: 'Flower Power' },
+            { emoji: '🦜', name: 'Parrot Pal' },
+            { emoji: '🎈', name: 'Balloon Fun' },
+            { emoji: '🌈', name: 'Rainbow Star' },
+            { emoji: '⭐', name: 'Bright Star' },
+            { emoji: '🍎', name: 'Sweet Apple' },
+            { emoji: '🎁', name: 'Gift Box' }
+        ];
+
+        const rewardBadges = ['🏆', '🎖', '🏅', '🥇', '🎯'];
+
+        function getReward() {
+            const stickers = JSON.parse(localStorage.getItem('readingAdventureStickers')) || [];
+            const stickerCount = stickers.length;
+
+            if (stickerCount < rewardStickers.length) {
+                const sticker = rewardStickers[stickerCount];
+                stickers.push(sticker);
+                localStorage.setItem('readingAdventureStickers', JSON.stringify(stickers));
+                return sticker;
+            }
+            return null;
+        }
+
+        function speak(text) {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.rate = 0.7;
+                utterance.pitch = 1.3;
+                speechSynthesis.speak(utterance);
+            }
+        }
+    </script>
+</body>
+</html>

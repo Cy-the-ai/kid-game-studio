@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Letter Safari 🦁</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(180deg, #228B22 0%, #32CD32 50%, #90EE90 100%);
+            min-height: 100vh;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+        }
+        #safari-area {
+            position: relative;
+            width: 100%;
+            height: 450px;
+            background: linear-gradient(180deg, #87CEEB 0%, #228B22 50%, #006400 100%);
+            border-radius: 20px;
+            border: 5px solid #FFD700;
+            overflow: hidden;
+        }
+        .jungle-element {
+            position: absolute;
+            font-size: 2.5rem;
+            cursor: pointer;
+            user-select: none;
+            transition: transform 0.2s;
+        }
+        .jungle-element:hover {
+            transform: scale(1.2);
+        }
+        .hidden-letter {
+            position: absolute;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #FFD700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            cursor: pointer;
+            user-select: none;
+            opacity: 0.6;
+            transition: all 0.3s;
+        }
+        .hidden-letter:hover {
+            opacity: 1;
+            transform: scale(1.3);
+        }
+        .found-letter {
+            position: absolute;
+            font-size: 3rem;
+            font-weight: bold;
+            color: #00FF00;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            animation: bounce 0.5s;
+            pointer-events: none;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.5); }
+        }
+        .target-letter {
+            font-size: 6rem;
+            font-weight: bold;
+            color: #FFD700;
+            text-shadow: 3px 3px 0 #FF6B6B;
+        }
+        .btn-safari {
+            background: linear-gradient(45deg, #228B22, #32CD32);
+            border: 3px solid #FFD700;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+            border-radius: 30px;
+            padding: 15px 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transition: all 0.3s;
+        }
+        .btn-safari:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        }
+        .score-panel {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .safari-title {
+            color: #FFD700;
+            text-shadow: 2px 2px 0 #228B22;
+        }
+        .message-box {
+            font-size: 2rem;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-3">
+        <div class="text-center mb-3">
+            <h1 class="display-4 safari-title">
+                <i class="fas fa-tree me-3"></i>Letter Safari
+            </h1>
+            <p class="lead text-white">Find the hidden letter in the jungle!</p>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <div class="score-panel text-center">
+                    <h5><i class="fas fa-crosshairs text-primary"></i> Find This Letter</h5>
+                    <div class="target-letter" id="target-letter">A</div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="score-panel text-center">
+                    <h5><i class="fas fa-star text-warning"></i> Score</h5>
+                    <div class="display-4" id="score">0</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mb-3">
+            <button class="btn btn-safari" onclick="startSafari()">
+                <i class="fas fa-play me-2"></i>Start Safari
+            </button>
+            <button class="btn btn-safari" onclick="resetSafari()">
+                <i class="fas fa-redo me-2"></i>New Safari
+            </button>
+        </div>
+
+        <div id="safari-area"></div>
+
+        <div id="message" class="text-center mt-3 message-box text-white"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let targetLetter = 'A';
+        let score = 0;
+        let safariActive = false;
+        let foundLetters = 0;
+        let lettersToFind = [];
+
+        const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+        const jungleItems = ['🌴', '🌿', '🌺', '🦋', '🐦', '🐒', '🌵', '🌻', '🌷', '🍃', '🌳', '🦜', '🌸', '🦎', '🌾'];
+
+        function startSafari() {
+            if (safariActive) return;
+            safariActive = true;
+            generateNewScene();
+        }
+
+        function resetSafari() {
+            safariActive = false;
+            score = 0;
+            foundLetters = 0;
+            lettersToFind = [];
+            document.getElementById('score').textContent = '0';
+            document.getElementById('message').textContent = '';
+            document.getElementById('safari-area').innerHTML = '';
+            document.getElementById('target-letter').textContent = 'A';
+        }
+
+        function generateNewScene() {
+            if (!safariActive) return;
+
+            foundLetters = 0;
+            lettersToFind = 3;
+
+            const safariArea = document.getElementById('safari-area');
+            safariArea.innerHTML = '';
+
+            // Pick a random target letter
+            targetLetter = alphabet[Math.floor(Math.random() * 3)]; // Start with A, B, or C
+            document.getElementById('target-letter').textContent = targetLetter;
+            document.getElementById('message').textContent = '';
+
+            // Add jungle items
+            for (let i = 0; i < 15; i++) {
+                createJungleItem(safariArea);
+            }
+
+            // Add hidden letters (3 of target, 5 of other letters)
+            for (let i = 0; i < 3; i++) {
+                createHiddenLetter(safariArea, targetLetter, true);
+            }
+            for (let i = 0; i < 5; i++) {
+                let otherLetter = alphabet[Math.floor(Math.random() * 5)];
+                while (otherLetter === targetLetter) {
+                    otherLetter = alphabet[Math.floor(Math.random() * 5)];
+                }
+                createHiddenLetter(safariArea, otherLetter, false);
+            }
+
+            speak(`Find the letter ${targetLetter}!`);
+        }
+
+        function createJungleItem(safariArea) {
+            const item = document.createElement('div');
+            item.className = 'jungle-element';
+            item.textContent = jungleItems[Math.floor(Math.random() * jungleItems.length)];
+            item.style.left = Math.random() * (safariArea.offsetWidth - 50) + 'px';
+            item.style.top = Math.random() * (safariArea.offsetHeight - 50) + 'px';
+            item.style.transform = `rotate(${Math.random() * 360}deg)`;
+            safariArea.appendChild(item);
+        }
+
+        function createHiddenLetter(safariArea, letter, isTarget) {
+            const letterEl = document.createElement('div');
+            letterEl.className = 'hidden-letter';
+            letterEl.textContent = letter;
+            letterEl.style.left = Math.random() * (safariArea.offsetWidth - 50) + 'px';
+            letterEl.style.top = Math.random() * (safariArea.offsetHeight - 50) + 'px';
+
+            if (isTarget) {
+                letterEl.onclick = () => handleFoundLetter(letterEl);
+            } else {
+                letterEl.onclick = () => handleWrongLetter(letterEl);
+            }
+
+            safariArea.appendChild(letterEl);
+        }
+
+        function handleFoundLetter(letterEl) {
+            if (!safariActive) return;
+
+            const found = document.createElement('div');
+            found.className = 'found-letter';
+            found.textContent = letterEl.textContent;
+            found.style.left = letterEl.style.left;
+            found.style.top = letterEl.style.top;
+
+            document.getElementById('safari-area').appendChild(found);
+            letterEl.remove();
+
+            foundLetters++;
+            score += 10;
+            document.getElementById('score').textContent = score;
+
+            speak(letterEl.textContent);
+
+            if (foundLetters >= lettersToFind) {
+                document.getElementById('message').textContent = '🎉 Amazing! You found them all!';
+                speak('Amazing! You found them all!');
+
+                setTimeout(() => {
+                    document.getElementById('message').textContent = '';
+                    generateNewScene();
+                }, 2500);
+            }
+        }
+
+        function handleWrongLetter(letterEl) {
+            if (!safariActive) return;
+
+            letterEl.style.color = '#FF0000';
+            letterEl.style.transform = 'scale(1.5)';
+
+            speak('Try again!');
+
+            setTimeout(() => {
+                letterEl.style.color = '#FFD700';
+                letterEl.style.transform = 'scale(1)';
+            }, 1000);
+        }
+
+        function speak(text) {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.rate = 0.8;
+                utterance.pitch = 1.2;
+                speechSynthesis.speak(utterance);
+            }
+        }
+    </script>
+</body>
+</html>
