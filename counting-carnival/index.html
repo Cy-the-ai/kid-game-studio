@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Counting Carnival 🎪</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -10,6 +10,7 @@
         * {
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
         }
 
         html, body {
@@ -23,7 +24,7 @@
             background: linear-gradient(180deg, #ff9a9e 0%, #fecfef 100%);
             min-height: 100vh;
             font-family: 'Comic Sans MS', cursive, sans-serif;
-            padding: 5px;
+            padding: 4px;
             display: flex;
             flex-direction: column;
         }
@@ -34,20 +35,21 @@
             margin: 0 auto;
             display: flex;
             flex-direction: column;
-            gap: 5px;
+            gap: 6px;
+            flex: 1;
         }
 
         .header {
             background: white;
             border-radius: 10px;
-            padding: 8px 10px;
+            padding: 6px 8px;
             text-align: center;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
         .carnival-title {
             color: #FF6B6B;
-            font-size: 1.3rem;
+            font-size: 1.1rem;
             margin: 0;
             text-shadow: 1px 1px 0 #FFD700;
         }
@@ -55,53 +57,53 @@
         .stats-container {
             background: white;
             border-radius: 10px;
-            padding: 6px 10px;
-            display: flex;
-            justify-content: space-around;
+            padding: 6px 8px;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 4px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
         .stat {
             text-align: center;
-            flex: 1;
         }
 
         .stat-label {
-            font-size: 0.7rem;
+            font-size: 0.6rem;
             color: #666;
             margin-bottom: 2px;
         }
 
         .stat-value {
-            font-size: 1.8rem;
+            font-size: 1.4rem;
             font-weight: bold;
             line-height: 1;
         }
 
         .target-val { color: #4ECDC4; }
         .count-val { color: #FF6B6B; }
-        .score-val { color: #FFD700; font-size: 1.4rem; }
+        .score-val { color: #FFD700; font-size: 1.1rem; }
 
         .difficulty-container {
             background: white;
             border-radius: 10px;
-            padding: 5px;
+            padding: 4px;
             display: flex;
-            gap: 5px;
+            gap: 4px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
         .diff-btn {
             flex: 1;
-            min-height: 40px;
-            font-size: 0.75rem;
+            min-height: 38px;
+            font-size: 0.7rem;
             font-weight: bold;
             border: 2px solid #007bff;
             background: white;
             color: #007bff;
             border-radius: 8px;
             cursor: pointer;
-            touch-action: manipulation;
+            padding: 4px;
         }
 
         .diff-btn.active {
@@ -112,20 +114,19 @@
 
         .controls {
             display: flex;
-            gap: 8px;
+            gap: 6px;
         }
 
         .control-btn {
             flex: 1;
-            min-height: 45px;
-            font-size: 0.95rem;
+            min-height: 44px;
+            font-size: 0.85rem;
             font-weight: bold;
             border-radius: 20px;
             border: none;
             background: linear-gradient(45deg, #FFD700, #FFA500);
             color: white;
             cursor: pointer;
-            touch-action: manipulation;
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
 
@@ -138,48 +139,50 @@
             border-radius: 10px;
             border: 3px solid #FFD700;
             overflow: hidden;
-            touch-action: none;
             position: relative;
-            height: 200px;
-            min-height: 200px;
-            flex-shrink: 0;
+            flex: 1;
+            min-height: 320px;
         }
 
         .falling-object {
             position: absolute;
-            font-size: 2rem;
+            font-size: 2.5rem;
             cursor: pointer;
             user-select: none;
             -webkit-tap-highlight-color: transparent;
-            animation: fall linear;
-            transition: transform 0.1s;
+            animation: fall linear forwards;
             z-index: 10;
-            touch-action: manipulation;
-            min-width: 50px;
-            min-height: 50px;
             display: flex;
             align-items: center;
             justify-content: center;
-            pointer-events: auto;
+            touch-action: none;
+            min-width: 65px;
+            min-height: 65px;
         }
 
         .falling-object:active {
-            transform: scale(1.2);
+            transform: scale(1.15);
         }
 
         @keyframes fall {
-            from { top: -50px; }
-            to { top: 100%; }
+            from {
+                top: -70px;
+                opacity: 1;
+            }
+            to {
+                top: 100%;
+                opacity: 0;
+            }
         }
 
         #message {
             background: white;
             border-radius: 10px;
-            padding: 8px 12px;
+            padding: 8px 10px;
             text-align: center;
-            font-size: 1rem;
+            font-size: 0.9rem;
             font-weight: bold;
-            min-height: 35px;
+            min-height: 38px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -190,10 +193,70 @@
             color: #28a745;
         }
 
-        /* Desktop */
-        @media (min-width: 768px) {
+        #message.error {
+            color: #dc3545;
+        }
+
+        .streak-counter {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            border-radius: 50%;
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            z-index: 100;
+        }
+
+        .streak-counter.hidden {
+            display: none;
+        }
+
+        .confetti {
+            position: absolute;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .confetti-piece {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            animation: confetti-fall 3.5s ease-out forwards;
+        }
+
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(350px) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes pop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.25); }
+            100% { transform: scale(1); }
+        }
+
+        .pop-animation {
+            animation: pop 0.3s ease-out;
+        }
+
+        /* Tablet */
+        @media (min-width: 576px) {
             body {
-                padding: 15px;
+                padding: 10px;
                 justify-content: center;
             }
 
@@ -203,11 +266,73 @@
             }
 
             .header {
-                padding: 12px 20px;
+                padding: 10px 15px;
             }
 
             .carnival-title {
-                font-size: 1.8rem;
+                font-size: 1.5rem;
+            }
+
+            .stat-value {
+                font-size: 2rem;
+            }
+
+            .score-val {
+                font-size: 1.5rem;
+            }
+
+            .diff-btn {
+                min-height: 45px;
+                font-size: 0.85rem;
+            }
+
+            .control-btn {
+                min-height: 50px;
+                font-size: 1rem;
+            }
+
+            #game-area {
+                min-height: 380px;
+            }
+
+            .falling-object {
+                font-size: 2.8rem;
+                min-width: 75px;
+                min-height: 75px;
+            }
+
+            #message {
+                font-size: 1.1rem;
+                min-height: 45px;
+            }
+        }
+
+        /* Desktop */
+        @media (min-width: 768px) {
+            body {
+                padding: 20px;
+            }
+
+            .game-container {
+                max-width: 700px;
+                gap: 15px;
+            }
+
+            .header {
+                padding: 15px 25px;
+            }
+
+            .carnival-title {
+                font-size: 2rem;
+            }
+
+            .stats-container {
+                padding: 10px 15px;
+                gap: 8px;
+            }
+
+            .stat-label {
+                font-size: 0.75rem;
             }
 
             .stat-value {
@@ -219,29 +344,29 @@
             }
 
             .diff-btn {
-                min-height: 50px;
-                font-size: 0.9rem;
+                min-height: 55px;
+                font-size: 1rem;
             }
 
             .control-btn {
-                min-height: 55px;
-                font-size: 1.1rem;
+                min-height: 60px;
+                font-size: 1.2rem;
             }
 
             #game-area {
-                height: 300px;
-                min-height: 300px;
+                min-height: 450px;
             }
 
             .falling-object {
-                font-size: 2.5rem;
-                min-width: 70px;
-                min-height: 70px;
+                font-size: 3rem;
+                min-width: 85px;
+                min-height: 85px;
             }
 
             #message {
-                font-size: 1.2rem;
-                min-height: 45px;
+                font-size: 1.3rem;
+                min-height: 50px;
+                padding: 12px 18px;
             }
         }
     </style>
@@ -295,7 +420,10 @@
         </div>
 
         <!-- Game Area -->
-        <div id="game-area"></div>
+        <div id="game-area">
+            <div class="streak-counter hidden" id="streak-counter">🔥0</div>
+            <div class="confetti" id="confetti-container"></div>
+        </div>
 
         <!-- Message -->
         <div id="message"></div>
@@ -309,8 +437,10 @@
         let objects = [];
         let maxNumber = 5;
         let fallSpeed = 1;
+        let streak = 0;
 
-        const emojis = ['🍎', '⭐', '🎈', '🎀', '🍪', '🌸', '🦋', '🌈', '🍭', '🎁'];
+        const emojis = ['🍎', '⭐', '🎈', '🎀', '🍪', '🌸', '🦋', '🌈', '🍭', '🎁', '🎨', '🎭'];
+        const confettiColors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff', '#ffa500', '#ff69b4', '#7cfc00', '#ff1493'];
 
         function setDifficulty(max, speed) {
             maxNumber = max;
@@ -322,6 +452,8 @@
         function startGame() {
             if (gameActive) return;
             gameActive = true;
+            streak = 0;
+            updateStreakDisplay();
             generateNewRound();
         }
 
@@ -329,12 +461,42 @@
             gameActive = false;
             count = 0;
             score = 0;
+            streak = 0;
             objects = [];
-            document.getElementById('game-area').innerHTML = '';
+            document.getElementById('game-area').innerHTML = '<div class="streak-counter hidden" id="streak-counter">🔥0</div><div class="confetti" id="confetti-container"></div>';
             document.getElementById('current-count').textContent = '0';
             document.getElementById('score').textContent = '0';
+            document.getElementById('target-number').textContent = '5';
             document.getElementById('message').textContent = '';
-            document.getElementById('message').classList.remove('success');
+            document.getElementById('message').classList.remove('success', 'error');
+            updateStreakDisplay();
+        }
+
+        function updateStreakDisplay() {
+            const streakCounter = document.getElementById('streak-counter');
+            if (streak >= 3) {
+                streakCounter.textContent = `🔥${streak}`;
+                streakCounter.classList.remove('hidden');
+            } else {
+                streakCounter.classList.add('hidden');
+            }
+        }
+
+        function triggerConfetti() {
+            const container = document.getElementById('confetti-container');
+            for (let i = 0; i < 35; i++) {
+                setTimeout(() => {
+                    const piece = document.createElement('div');
+                    piece.className = 'confetti-piece';
+                    piece.style.backgroundColor = confettiColors[Math.floor(Math.random() * confettiColors.length)];
+                    piece.style.left = Math.random() * 100 + '%';
+                    piece.style.top = Math.random() * 40 + '%';
+                    piece.style.animationDuration = (2.5 + Math.random() * 2.5) + 's';
+                    container.appendChild(piece);
+
+                    setTimeout(() => piece.remove(), 5000);
+                }, i * 35);
+            }
         }
 
         function generateNewRound() {
@@ -345,10 +507,15 @@
             document.getElementById('target-number').textContent = target;
             document.getElementById('current-count').textContent = '0';
             document.getElementById('message').textContent = '';
-            document.getElementById('message').classList.remove('success');
+            document.getElementById('message').classList.remove('success', 'error');
 
             const gameArea = document.getElementById('game-area');
+            const existingConfetti = gameArea.querySelector('.confetti');
+            const existingStreak = gameArea.querySelector('.streak-counter');
+
             gameArea.innerHTML = '';
+            if (existingConfetti) gameArea.appendChild(existingConfetti);
+            if (existingStreak) gameArea.appendChild(existingStreak);
 
             for (let i = 0; i < target; i++) {
                 createFallingObject(gameArea);
@@ -362,14 +529,15 @@
             obj.className = 'falling-object';
             obj.textContent = emojis[Math.floor(Math.random() * emojis.length)];
 
-            // Random horizontal position
-            const maxX = gameArea.offsetWidth - 50;
-            obj.style.left = Math.max(0, Math.random() * maxX) + 'px';
+            const gameAreaRect = gameArea.getBoundingClientRect();
+            const maxX = gameAreaRect.width - 70;
+            obj.style.left = Math.max(5, Math.random() * maxX) + 'px';
 
-            // Random fall speed
-            obj.style.animationDuration = (4 + Math.random() * 3) / fallSpeed + 's';
+            // Slower fall speed on mobile for easier tapping
+            const isMobile = window.innerWidth < 576;
+            const baseSpeed = isMobile ? 8 : 5;
+            obj.style.animationDuration = (baseSpeed + Math.random() * 4) / fallSpeed + 's';
 
-            // Handle both click and touch events
             const handleClick = (e) => {
                 e.preventDefault();
                 e.stopPropagation();
@@ -378,17 +546,29 @@
 
                 count++;
                 document.getElementById('current-count').textContent = count;
+
+                const countDisplay = document.getElementById('current-count');
+                countDisplay.classList.remove('pop-animation');
+                void countDisplay.offsetWidth;
+                countDisplay.classList.add('pop-animation');
+
                 speak(count.toString());
 
                 obj.remove();
                 objects = objects.filter(o => o !== obj);
 
                 if (count === target) {
-                    score += target * 10;
+                    streak++;
+                    updateStreakDisplay();
+
+                    const streakBonus = streak >= 3 ? streak * 5 : 0;
+                    score += target * 10 + streakBonus;
                     document.getElementById('score').textContent = score;
-                    document.getElementById('message').textContent = '🎉 Correct!';
+                    document.getElementById('message').textContent = streak >= 3 ? `🔥 Streak ${streak}! Bonus!` : '🎉 Correct!';
                     document.getElementById('message').classList.add('success');
-                    speak('Great job!');
+                    speak(streak >= 3 ? `Amazing! Streak ${streak}!` : 'Great job!');
+
+                    triggerConfetti();
 
                     setTimeout(() => {
                         document.getElementById('message').textContent = '';
