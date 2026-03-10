@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: github-pages
 
 on:
   push:
@@ -8,10 +8,9 @@ on:
 permissions:
   contents: read
   pages: write
-  id-token: write
 
 jobs:
-  deploy:
+  pages:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -27,15 +26,10 @@ jobs:
 
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+        id: deployment
 
-      - name: Display Deployment URL
+      - name: Display URL
         run: |
           echo "::notice title=Deployment Successful::"
-          echo "::notice::The site is now live at: https://cy-the-ai.github.io/kid-game-studio/ ::"
-          echo "::notice::Game URL: https://cy-the-ai.github.io/kid-game-studio/reading-adventure/ ::"
-          echo "::set-output name=DEPLOYMENT_URL::https://cy-the-ai.github.io/kid-game-studio/"
-
-    outputs:
-      DEPLOYMENT_URL: ${{ steps.display-deployment-url.outputs.DEPLOYMENT_URL }}
+          echo "DEPLOYMENT_URL=${{ steps.deployment.outputs.page_url }}"
+          echo "DEPLOYMENT_URL=${{ steps.deployment.outputs.page_url }}" >> $GITHUB_ENV
