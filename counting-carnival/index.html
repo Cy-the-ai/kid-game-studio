@@ -7,52 +7,83 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
         body {
             background: linear-gradient(180deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
             min-height: 100vh;
             font-family: 'Comic Sans MS', cursive, sans-serif;
-            overflow-x: hidden;
+            padding: 15px 10px;
+            touch-action: manipulation;
         }
+
         #game-area {
             position: relative;
             width: 100%;
-            height: 400px;
-            min-height: 300px;
+            height: 450px;
+            min-height: 350px;
             background: linear-gradient(180deg, #87CEEB 0%, #E0F7FA 100%);
             border-radius: 20px;
             border: 4px solid #FFD700;
             overflow: hidden;
-            touch-action: manipulation;
+            touch-action: none;
+            z-index: 5;
+            margin-bottom: 20px;
         }
+
         .falling-object {
             position: absolute;
-            font-size: 2.5rem;
+            font-size: 3rem;
             cursor: pointer;
             user-select: none;
             -webkit-tap-highlight-color: transparent;
             animation: fall linear;
             transition: transform 0.1s;
             z-index: 10;
+            touch-action: manipulation;
+            min-width: 80px;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
+
         .falling-object:active {
             transform: scale(1.3);
         }
+
         @keyframes fall {
-            from { top: -60px; }
+            from { top: -80px; }
             to { top: 100%; }
         }
+
         .count-display {
             font-size: 5rem;
             font-weight: bold;
             color: #FF6B6B;
             text-shadow: 3px 3px 0 #fff, -1px -1px 0 #fff;
             text-align: center;
+            line-height: 1;
         }
+
         .target-display {
             font-size: 3rem;
             color: #4ECDC4;
             text-align: center;
+            line-height: 1.2;
         }
+
         .btn-carnival {
             background: linear-gradient(45deg, #FFD700, #FFA500);
             border: 3px solid #FF6B6B;
@@ -66,60 +97,138 @@
             touch-action: manipulation;
             -webkit-tap-highlight-color: transparent;
             width: 100%;
-            max-width: 200px;
-            min-height: 50px;
+            max-width: 180px;
+            min-height: 52px;
+            z-index: 20;
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
+
         .btn-carnival:hover {
             transform: scale(1.05);
             box-shadow: 0 8px 20px rgba(0,0,0,0.4);
         }
+
+        .btn-carnival:active {
+            transform: scale(0.95);
+        }
+
         .difficulty-btn {
             width: 110px;
-            min-height: 60px;
+            min-height: 65px;
             margin: 5px;
-            padding: 8px 10px;
+            padding: 10px 12px;
             font-size: 0.9rem;
             touch-action: manipulation;
             -webkit-tap-highlight-color: transparent;
+            z-index: 20;
+            position: relative;
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
+
         .difficulty-btn.active {
             background: #28a745 !important;
             border-color: #1e7e34 !important;
             color: white !important;
         }
+
         .score-panel {
             background: white;
             border-radius: 15px;
             padding: 15px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            min-height: 100px;
+            min-height: 110px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            z-index: 10;
+            position: relative;
         }
+
         .carnival-title {
             color: #FF6B6B;
             text-shadow: 2px 2px 0 #FFD700;
-            font-size: 2rem;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            z-index: 10;
+            position: relative;
         }
+
         #message {
-            min-height: 40px;
+            min-height: 50px;
             font-size: 1.5rem;
+            z-index: 10;
+            position: relative;
+            margin-top: 10px;
         }
 
         /* Mobile responsiveness */
         @media (max-width: 768px) {
             body {
-                padding: 10px;
+                padding: 12px 8px;
             }
             #game-area {
-                height: 300px;
-                min-height: 250px;
+                height: 380px;
+                min-height: 320px;
+                border-width: 3px;
+                margin-bottom: 15px;
+            }
+            .falling-object {
+                font-size: 2.5rem;
+                min-width: 70px;
+                min-height: 70px;
+            }
+            .count-display {
+                font-size: 4rem;
+            }
+            .target-display {
+                font-size: 2.5rem;
+            }
+            .score-panel {
+                padding: 12px;
+                min-height: 100px;
+            }
+            .btn-carnival {
+                font-size: 1rem;
+                padding: 10px 20px;
+                min-height: 48px;
+                max-width: 160px;
+            }
+            .difficulty-btn {
+                width: 100px;
+                min-height: 60px;
+                font-size: 0.85rem;
+                margin: 4px;
+                padding: 8px 10px;
+            }
+            .carnival-title {
+                font-size: 1.5rem;
+            }
+            #message {
+                font-size: 1.3rem;
+            }
+        }
+
+        /* Extra small mobile */
+        @media (max-width: 480px) {
+            body {
+                padding: 10px 6px;
+            }
+            #game-area {
+                height: 320px;
+                min-height: 280px;
                 border-width: 3px;
             }
             .falling-object {
-                font-size: 2rem;
+                font-size: 2.2rem;
+                min-width: 65px;
+                min-height: 65px;
             }
             .count-display {
                 font-size: 3.5rem;
@@ -128,36 +237,40 @@
                 font-size: 2.2rem;
             }
             .score-panel {
-                padding: 12px;
+                padding: 10px;
                 min-height: 90px;
             }
             .btn-carnival {
-                font-size: 1rem;
-                padding: 10px 20px;
-                min-height: 45px;
+                font-size: 0.95rem;
+                padding: 9px 18px;
+                min-height: 46px;
+                max-width: 150px;
             }
             .difficulty-btn {
-                width: 100px;
+                width: 95px;
                 min-height: 55px;
-                font-size: 0.85rem;
-                margin: 4px;
+                font-size: 0.8rem;
+                margin: 3px;
+                padding: 7px 9px;
             }
             .carnival-title {
-                font-size: 1.5rem;
+                font-size: 1.3rem;
             }
             #message {
                 font-size: 1.2rem;
             }
         }
 
-        /* Extra small mobile */
-        @media (max-width: 480px) {
+        /* Very small mobile */
+        @media (max-width: 360px) {
             #game-area {
-                height: 250px;
-                min-height: 200px;
+                height: 280px;
+                min-height: 250px;
             }
             .falling-object {
-                font-size: 1.8rem;
+                font-size: 2rem;
+                min-width: 60px;
+                min-height: 60px;
             }
             .count-display {
                 font-size: 3rem;
@@ -165,30 +278,22 @@
             .target-display {
                 font-size: 2rem;
             }
-            .score-panel {
-                padding: 10px;
-                min-height: 80px;
-            }
             .btn-carnival {
-                font-size: 0.95rem;
-                padding: 8px 18px;
-                min-height: 42px;
-                max-width: 180px;
+                font-size: 0.9rem;
+                padding: 8px 16px;
+                min-height: 44px;
+                max-width: 140px;
             }
             .difficulty-btn {
-                width: 95px;
+                width: 90px;
                 min-height: 50px;
-                font-size: 0.8rem;
-                margin: 3px;
-            }
-            .carnival-title {
-                font-size: 1.3rem;
+                font-size: 0.75rem;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container py-2">
+    <div class="container-fluid py-2">
         <div class="text-center mb-3">
             <h1 class="carnival-title">
                 <i class="fas fa-ticket-alt me-2"></i>Counting Carnival
@@ -199,20 +304,20 @@
         <div class="row mb-3">
             <div class="col-4">
                 <div class="score-panel">
-                    <h5 style="font-size: 0.9rem; margin-bottom: 5px;"><i class="fas fa-bullseye text-primary"></i> Target</h5>
-                    <div class="target-display" id="target-number">5</div>
+                    <h5 style="font-size: 0.85rem; margin-bottom: 5px; z-index: 15; position: relative;"><i class="fas fa-bullseye text-primary"></i> Target</h5>
+                    <div class="target-display" id="target-number" style="z-index: 15; position: relative;">5</div>
                 </div>
             </div>
             <div class="col-4">
                 <div class="score-panel">
-                    <h5 style="font-size: 0.9rem; margin-bottom: 5px;"><i class="fas fa-hashtag text-success"></i> Count</h5>
-                    <div class="count-display" id="current-count">0</div>
+                    <h5 style="font-size: 0.85rem; margin-bottom: 5px; z-index: 15; position: relative;"><i class="fas fa-hashtag text-success"></i> Count</h5>
+                    <div class="count-display" id="current-count" style="z-index: 15; position: relative;">0</div>
                 </div>
             </div>
             <div class="col-4">
                 <div class="score-panel">
-                    <h5 style="font-size: 0.9rem; margin-bottom: 5px;"><i class="fas fa-star text-warning"></i> Score</h5>
-                    <div class="display-4 text-center" id="score" style="font-size: 2rem;">0</div>
+                    <h5 style="font-size: 0.85rem; margin-bottom: 5px; z-index: 15; position: relative;"><i class="fas fa-star text-warning"></i> Score</h5>
+                    <div class="display-4 text-center" id="score" style="font-size: 2rem; z-index: 15; position: relative;">0</div>
                 </div>
             </div>
         </div>
@@ -242,7 +347,7 @@
 
         <div id="game-area"></div>
 
-        <div id="message" class="text-center mt-3 fw-bold text-success"></div>
+        <div id="message" class="text-center fw-bold text-success"></div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -304,36 +409,49 @@
             const obj = document.createElement('div');
             obj.className = 'falling-object';
             obj.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-            obj.style.left = Math.random() * (gameArea.offsetWidth - 50) + 'px';
+
+            // Random horizontal position
+            const maxX = gameArea.offsetWidth - 80;
+            obj.style.left = Math.max(0, Math.random() * maxX) + 'px';
+
+            // Random fall speed
             obj.style.animationDuration = (4 + Math.random() * 3) / fallSpeed + 's';
-            obj.onclick = () => handleClick(obj);
+
+            // Handle both click and touch events
+            const handleClick = (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                if (!gameActive) return;
+                if (!objects.includes(obj)) return;
+
+                count++;
+                document.getElementById('current-count').textContent = count;
+                speak(count.toString());
+
+                obj.remove();
+                objects = objects.filter(o => o !== obj);
+
+                if (count === target) {
+                    score += target * 10;
+                    document.getElementById('score').textContent = score;
+                    document.getElementById('message').textContent = '🎉 Correct! Great job!';
+                    speak('Great job!');
+
+                    setTimeout(() => {
+                        document.getElementById('message').textContent = '';
+                        generateNewRound();
+                    }, 2000);
+                }
+            };
+
+            obj.addEventListener('click', handleClick);
+            obj.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                handleClick(e);
+            });
 
             gameArea.appendChild(obj);
             objects.push(obj);
-        }
-
-        function handleClick(obj) {
-            if (!gameActive) return;
-            if (!objects.includes(obj)) return;
-
-            count++;
-            document.getElementById('current-count').textContent = count;
-            speak(count.toString());
-
-            obj.remove();
-            objects = objects.filter(o => o !== obj);
-
-            if (count === target) {
-                score += target * 10;
-                document.getElementById('score').textContent = score;
-                document.getElementById('message').textContent = '🎉 Correct! Great job!';
-                speak('Great job!');
-
-                setTimeout(() => {
-                    document.getElementById('message').textContent = '';
-                    generateNewRound();
-                }, 2000);
-            }
         }
 
         function speak(text) {
