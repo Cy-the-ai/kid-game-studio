@@ -14,11 +14,28 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/configure-pages@v4
-      - uses: actions/upload-pages-artifact@v3
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
           path: .
-      - uses: actions/deploy-pages@v4
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Display Deployment URL
+        run: |
+          echo "::notice title=Deployment Successful::"
+          echo "::notice::The site is now live at: https://cy-the-ai.github.io/kid-game-studio/ ::"
+          echo "::notice::Game URL: https://cy-the-ai.github.io/kid-game-studio/reading-adventure/ ::"
+          echo "::set-output name=DEPLOYMENT_URL::https://cy-the-ai.github.io/kid-game-studio/"
+
+    outputs:
+      DEPLOYMENT_URL: ${{ steps.display-deployment-url.outputs.DEPLOYMENT_URL }}
