@@ -4,34 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kid Game Studio 🎮</title>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Baloo+2:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Baloo+2&display=swap');
 
         body {
-            background: linear-gradient(180deg, #1a1a2e 0%, #2d1b4e 100%);
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
             min-height: 100vh;
-            font-family: 'Comic Neue', cursive, sans-serif;
+            font-family: 'Baloo 2', 'Fredoka One', cursive, sans-serif;
             color: #ffffff;
+            overflow-x: hidden;
         }
 
         .hero-section {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 0 0 0 40px 40px;
-            padding: 60px 20px;
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            border-bottom: 5px solid rgba(255,255,255,0.2);
+            padding: 30px;
             text-align: center;
             position: relative;
             overflow: hidden;
         }
 
-        .hero-content {
-            position: relative;
-            z-index: 1;
-        }
-
-        .studio-title {
+        .hero-title {
             font-family: 'Fredoka One', cursive, sans-serif;
             background: linear-gradient(45deg, #FFD700, #FFA500);
             -webkit-background-clip: text;
@@ -39,50 +35,116 @@
             background-clip: text;
             font-size: 3.5rem;
             font-weight: 700;
-            margin-bottom: 20px;
-            text-shadow: 0 4px 8px rgba(0,0,0,0.3);
-            animation: bounce 1s ease-in-out;
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        .age-tag {
-            background: linear-gradient(135deg, #f093fb, #f5576c);
-            color: white;
-            padding: 10px 25px;
-            border-radius: 30px;
-            font-family: 'Comic Neue', cursive, sans-serif;
-            font-weight: 700;
+            margin: 0;
+            padding: 15px 30px;
+            border-radius: 50px;
             display: inline-block;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            animation: float 3s ease-in-out infinite;
         }
 
-        .game-scroller {
-            max-height: calc(100vh - 200px);
-            overflow-y: auto;
-            overflow-x: hidden;
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: rgba(255,255,255,0.9);
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .hero-scroller {
+            position: absolute;
+            width: 200%;
+            display: flex;
+            animation: scroll-left 20s linear infinite;
+        }
+
+        .floating-item {
+            font-size: 2.5rem;
+            margin: 0 20px;
+            animation: float 3s ease-in-out infinite;
+            opacity: 0.6;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes scroll-left {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        .games-section {
             padding: 40px 20px;
-            perspective: 1000px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 30px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-family: 'Fredoka One', cursive, sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #FFD700;
+            margin-bottom: 10px;
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: rgba(255,255,255,0.8);
+            font-weight: 600;
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .games-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         .game-card {
             background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
             border-radius: 25px;
-            padding: 30px;
-            margin-bottom: 30px;
-            transform-style: preserve-3d;
+            padding: 25px;
+            text-align: center;
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
             border: 4px solid transparent;
             cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .game-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(255,255,255,0.1), rgba(255,255,255,0));
+            opacity: 0;
+            transition: opacity 0.4s;
+            border-radius: 25px;
+        }
+
+        .game-card:hover::before {
+            opacity: 0.3;
         }
 
         .game-card:hover {
-            transform: translateY(-15px) rotateX(5deg) rotateY(5deg) scale(1.05);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+            transform: translateY(-10px) rotateX(2deg) scale(1.05);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
             border-color: #FFD700;
         }
 
@@ -91,102 +153,100 @@
             margin-bottom: 20px;
             display: block;
             filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
-            animation: float 3s ease-in-out infinite;
+            animation: bounce 1s ease-in-out infinite;
         }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            25% { transform: translateY(-8px) rotate(5deg); }
-            50% { transform: translateY(0) rotate(0deg); }
-            75% { transform: translateY(-8px) rotate(-5deg); }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
         }
 
         .game-title {
             font-family: 'Fredoka One', cursive, sans-serif;
-            font-size: 2.2rem;
+            font-size: 1.8rem;
             font-weight: 700;
             color: #1a1a2e;
             margin-bottom: 15px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
 
         .game-description {
-            font-size: 1.1rem;
-            color: #4a5568;
-            line-height: 1.6;
+            font-size: 1rem;
+            color: #666;
+            line-height: 1.5;
             margin-bottom: 20px;
-            padding: 0 10px;
         }
 
         .age-badge {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 6px 18px;
-            border-radius: 20px;
-            font-family: 'Comic Neue', cursive, sans-serif;
-            font-size: 0.9rem;
-            font-weight: 700;
             display: inline-block;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-weight: 700;
+            font-size: 0.9rem;
             margin-bottom: 20px;
         }
 
         .play-button {
-            background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
-            color: white;
+            background: linear-gradient(135deg, #FFD700, #FFA500 100%);
             border: none;
             border-radius: 50px;
-            padding: 15px 40px;
-            font-family: 'Comic Neue', cursive, sans-serif;
-            font-size: 1.3rem;
+            color: white;
             font-weight: 700;
+            font-size: 1.2rem;
+            font-family: 'Baloo 2', cursive, sans-serif;
+            padding: 15px 40px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-            display: inline-block;
-            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             width: 100%;
-            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
 
         .play-button:hover {
-            transform: scale(1.1);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-            background: linear-gradient(135deg, #FF8E53 0%, #FF6B6B 100%);
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
         }
 
-        .category-tag {
-            background: linear-gradient(135deg, #20c997 0%, #28a745 100%);
-            color: white;
-            padding: 4px 14px;
-            border-radius: 15px;
-            font-size: 0.85rem;
-            font-weight: 700;
-            display: inline-block;
-            margin-bottom: 15px;
-        }
-
-        .feature-icons {
-            font-size: 1.5rem;
-            color: #4a5568;
-            margin-bottom: 15px;
+        .category-tags {
             display: flex;
-            gap: 15px;
+            gap: 10px;
             justify-content: center;
             flex-wrap: wrap;
+            margin-bottom: 15px;
         }
 
-        .feature-icons span {
-            background: rgba(255,255,255,0.1);
-            padding: 8px 15px;
-            border-radius: 10px;
-            display: inline-block;
+        .tag {
+            background: rgba(255,255,255,0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #1a1a2e;
+        }
+
+        .features {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .feature-icon-small {
+            font-size: 1.2rem;
         }
 
         .footer {
             text-align: center;
-            padding: 40px 20px;
-            color: #4a5568;
-            font-size: 0.95rem;
+            padding: 30px 20px;
+            color: rgba(255,255,255,0.7);
+            font-size: 0.9rem;
         }
 
         .footer-text {
@@ -194,162 +254,230 @@
             margin: 0;
         }
 
-        @media (max-width: 768px) {
-            .studio-title {
-                font-size: 2.5rem;
-            }
-
-            .game-card {
-                padding: 25px;
-            }
-
-            .game-icon {
-                font-size: 4rem;
-            }
-
-            .game-title {
-                font-size: 1.8rem;
-            }
-
-            .play-button {
-                padding: 12px 30px;
-                font-size: 1.1rem;
-            }
+        .footer-subtitle {
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+            color: rgba(255,255,255,0.8);
+            font-weight: 600;
         }
     </style>
 </head>
 <body>
+    <!-- Hero Section with Animated Background -->
     <div class="hero-section">
-        <div class="hero-content">
-            <div class="studio-title">Kid Game Studio</div>
-            <div class="age-tag">
-                <i class="fas fa-child me-2"></i> Ages 7-11
-            </div>
+        <div class="hero-title">
+            <i class="fas fa-gamepad"></i>
+            Kid Game Studio
+        </div>
+        <div class="hero-subtitle">
+            Fun educational games for kids ages 7-11!
         </div>
 
-        <!-- Floating decoration -->
-        <div style="position: absolute; top: 20px; right: 30px; font-size: 4rem; animation: float 4s ease-in-out infinite; opacity: 0.3;">
-            🎮
-        </div>
-        <div style="position: absolute; bottom: 20px; left: 30px; font-size: 3rem; animation: float 4s ease-in-out infinite; opacity: 0.2; animation-delay: 1s;">
-            🎨
+        <!-- Floating Decoration Scroller -->
+        <div class="hero-scroller">
+            <span class="floating-item">🎮</span>
+            <span class="floating-item">🎨</span>
+            <span class="floating-item">🎊</span>
+            <span class="floating-item">🎯</span>
+            <span class="floating-item">🎭</span>
+            <span class="floating-item">🎸</span>
+            <span class="floating-item">🎲</span>
+            <span class="floating-item">🏆</span>
+            <span class="floating-item">🏅</span>
+            <span class="floating-item">🎯</span>
+            <span class="floating-item">🎮</span>
+            <span class="floating-item">🎨</span>
         </div>
     </div>
 
-    <div class="game-scroller">
-        <!-- Reading Adventure -->
-        <div class="game-card" onclick="window.location.href='reading-adventure/'">
-            <div class="game-icon">📚</div>
-            <div class="category-tag">
-                <i class="fas fa-book-open me-2"></i> Reading
-            </div>
-            <div class="game-title">Reading Adventure</div>
-            <div class="game-description">
-                Learn ABCs, count objects, and build words! Complete learning journey with 3 progressive levels.
-            </div>
-            <div class="feature-icons">
-                <span><i class="fas fa-font me-1"></i> Letters</span>
-                <span><i class="fas fa-hashtag me-1"></i> Numbers</span>
-                <span><i class="fas fa-spell-check me-1"></i> Words</span>
-                <span><i class="fas fa-volume-up me-1"></i> Audio</span>
-            </div>
-            <div class="age-badge">Ages 4-6</div>
-            <a href="reading-adventure/" class="play-button">
-                <i class="fas fa-play-circle me-2"></i> Play Now
-            </a>
+    <!-- Games Section -->
+    <div class="games-section">
+        <div class="section-header">
+            <h2 class="section-title">🎮 All Games</h2>
+            <p class="section-subtitle">Choose a game to play!</p>
         </div>
 
-        <!-- Counting Carnival -->
-        <div class="game-card" onclick="window.location.href='counting-carnival/'">
-            <div class="game-icon">🎪</div>
-            <div class="category-tag">
-                <i class="fas fa-calculator me-2"></i> Math
+        <div class="games-grid">
+            <!-- Reading Adventure (NEW - Enhanced) -->
+            <div class="game-card" onclick="window.location.href='reading-adventure/'">
+                <div class="game-icon">
+                    <i class="fas fa-book-open"></i>
+                </div>
+                <h3 class="game-title">Reading Adventure</h3>
+                <div class="game-description">
+                    Comprehensive learning journey! Learn ABCs, count objects, and build words with 3 progressive levels.
+                </div>
+                <div class="category-tags">
+                    <span class="tag">Reading</span>
+                    <span class="tag">Math</span>
+                    <span class="tag">Progressive</span>
+                </div>
+                <div class="features">
+                    <div class="feature-item">
+                        <i class="fas fa-star feature-icon-small"></i>
+                        <span>3 Levels</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-trophy feature-icon-small"></i>
+                        <span>Rewards</span>
+                    </div>
+                </div>
+                <div class="age-badge">
+                    Ages 4-6
+                </div>
+                <button class="play-button">
+                    <i class="fas fa-play-circle"></i>
+                    Play Now!
+                </button>
             </div>
-            <div class="game-title">Counting Carnival</div>
-            <div class="game-description">
-                Count fun carnival objects while you learn numbers! Tap to count from 1 to 10.
-            </div>
-            <div class="feature-icons">
-                <span><i class="fas fa-ticket-alt me-1"></i> Tickets</span>
-                <span><i class="fas fa-star me-1"></i> Stars</span>
-                <span><i class="fas fa-trophy me-1"></i> Score</span>
-            </div>
-            <div class="age-badge">Ages 4-6</div>
-            <a href="counting-carnival/" class="play-button">
-                <i class="fas fa-play-circle me-2"></i> Play Now
-            </a>
-        </div>
 
-        <!-- Letter Safari -->
-        <div class="game-card" onclick="window.location.href='letter-safari/'">
-            <div class="game-icon">🦁️</div>
-            <div class="category-tag">
-                <i class="fas fa-book-open me-2"></i> Reading
+            <!-- Counting Carnival -->
+            <div class="game-card" onclick="window.location.href='counting-carnival/'">
+                <div class="game-icon">
+                    <i class="fas fa-ticket-alt"></i>
+                </div>
+                <h3 class="game-title">Counting Carnival</h3>
+                <div class="game-description">
+                    Count fun carnival objects while you learn numbers! Tap to count from 1-10 with exciting animations.
+                </div>
+                <div class="category-tags">
+                    <span class="tag">Math</span>
+                    <span class="tag">Numbers</span>
+                    <span class="tag">Interactive</span>
+                </div>
+                <div class="features">
+                    <div class="feature-item">
+                        <i class="fas fa-hashtag feature-icon-small"></i>
+                        <span>5 Levels</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-bolt feature-icon-small"></i>
+                        <span>Fast</span>
+                    </div>
+                </div>
+                <div class="age-badge">
+                    Ages 4-7
+                </div>
+                <button class="play-button">
+                    <i class="fas fa-play-circle"></i>
+                    Play Now!
+                </button>
             </div>
-            <div class="game-title">Letter Safari</div>
-            <div class="game-description">
-                Explore the jungle and find hidden letters! Learn the alphabet with fun animal friends.
-            </div>
-            <div class="feature-icons">
-                <span><i class="fas fa-font me-1"></i> 26 Letters</span>
-                <span><i class="fas fa-tree me-1"></i> 5 Distractors</span>
-                <span><i class="fas fa-compass me-1"></i> Navigate</span>
-            </div>
-            <div class="age-badge">Ages 4-6</div>
-            <a href="letter-safari/" class="play-button">
-                <i class="fas fa-play-circle me-2"></i> Play Now
-            </a>
-        </div>
 
-        <!-- Pizza Fractions -->
-        <div class="game-card" onclick="window.location.href='pizza-fractions/'">
-            <div class="game-icon">🍕</div>
-            <div class="category-tag">
-                <i class="fas fa-calculator me-2"></i> Math
+            <!-- Letter Safari -->
+            <div class="game-card" onclick="window.location.href='letter-safari/'">
+                <div class="game-icon">
+                    <i class="fas fa-tree"></i>
+                </div>
+                <h3 class="game-title">Letter Safari</h3>
+                <div class="game-description">
+                    Explore the jungle and find hidden letters! Learn your alphabet with animal friends and fun challenges.
+                </div>
+                <div class="category-tags">
+                    <span class="tag">Reading</span>
+                    <span class="tag">Letters</span>
+                    <span class="tag">Adventure</span>
+                </div>
+                <div class="features">
+                    <div class="feature-item">
+                        <i class="fas fa-font feature-icon-small"></i>
+                        <span>26 Letters</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-compass feature-icon-small"></i>
+                        <span>Navigate</span>
+                    </div>
+                </div>
+                <div class="age-badge">
+                    Ages 4-7
+                </div>
+                <button class="play-button">
+                    <i class="fas fa-play-circle"></i>
+                    Play Now!
+                </button>
             </div>
-            <div class="game-title">Pizza Fractions</div>
-            <div class="game-description">
-                Learn fractions with delicious pizza! Slice pizza to understand halves, thirds, and quarters.
-            </div>
-            <div class="feature-icons">
-                <span><i class="fas fa-pizza-slice me-1"></i> Slices</span>
-                <span><i class="fas fa-utensils me-1"></i> Recipes</span>
-                <span><i class="fas fa-fire me-1"></i> Hot & Fresh</span>
-            </div>
-            <div class="age-badge">Ages 7-9</div>
-            <a href="pizza-fractions/" class="play-button">
-                <i class="fas fa-play-circle me-2"></i> Play Now
-            </a>
-        </div>
 
-        <!-- Word Builder -->
-        <div class="game-card" onclick="window.location.href='word-builder/'">
-            <div class="game-icon">🧩</div>
-            <div class="category-tag">
-                <i class="fas fa-book-open me-2"></i> Reading
+            <!-- Pizza Fractions -->
+            <div class="game-card" onclick="window.location.href='pizza-fractions/'">
+                <div class="game-icon">
+                    <i class="fas fa-pizza-slice"></i>
+                </div>
+                <h3 class="game-title">Pizza Fractions</h3>
+                <div class="game-description">
+                    Learn fractions with delicious pizza! Slice pizza to understand halves, thirds, and quarters in a fun way.
+                </div>
+                <div class="category-tags">
+                    <span class="tag">Math</span>
+                    <span class="tag">Fractions</span>
+                    <span class="tag">Visual</span>
+                </div>
+                <div class="features">
+                    <div class="feature-item">
+                        <i class="fas fa-chart-pie feature-icon-small"></i>
+                        <span>5 Types</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-fire feature-icon-small"></i>
+                        <span>Fun</span>
+                    </div>
+                </div>
+                <div class="age-badge">
+                    Ages 7-9
+                </div>
+                <button class="play-button">
+                    <i class="fas fa-play-circle"></i>
+                    Play Now!
+                </button>
             </div>
-            <div class="game-title">Word Builder</div>
-            <div class="game-description">
-                Spell words by dragging letters! Build your vocabulary with fun puzzles and hints.
-            </div>
-            <div class="feature-icons">
-                <span><i class="fas fa-puzzle-piece me-1"></i> 10 Words</span>
-                <span><i class="fas fa-lightbulb me-1"></i> Hints</span>
-                <span><i class="fas fa-redo me-1"></i> Reset</span>
-            </div>
-            <div class="age-badge">Ages 4-6</div>
-            <a href="word-builder/" class="play-button">
-                <i class="fas fa-play-circle me-2"></i> Play Now
-            </a>
-        </div>
 
-        <div class="footer">
-            <div class="footer-text">
-                <i class="fas fa-heart text-danger me-2"></i> Made with love for young learners
+            <!-- Word Builder -->
+            <div class="game-card" onclick="window.location.href='word-builder/'">
+                <div class="game-icon">
+                    <i class="fas fa-spell-check"></i>
+                </div>
+                <h3 class="game-title">Word Builder</h3>
+                <div class="game-description">
+                    Spell words by dragging letters! Build your vocabulary with fun puzzles and helpful hints.
+                </div>
+                <div class="category-tags">
+                    <span class="tag">Reading</span>
+                    <span class="tag">Spelling</span>
+                    <span class="tag">Puzzles</span>
+                </div>
+                <div class="features">
+                    <div class="feature-item">
+                        <i class="fas fa-puzzle-piece feature-icon-small"></i>
+                        <span>10 Words</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-lightbulb feature-icon-small"></i>
+                        <span>Hints</span>
+                    </div>
+                </div>
+                <div class="age-badge">
+                    Ages 4-7
+                </div>
+                <button class="play-button">
+                    <i class="fas fa-play-circle"></i>
+                    Play Now!
+                </button>
             </div>
-            <div style="margin-top: 10px; font-size: 0.85rem; opacity: 0.7;">
-                Perfect for learning reading, math, and problem-solving skills!
-            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <div class="footer-text">
+            <i class="fas fa-heart text-danger"></i>
+            Made with love for young learners
+        </div>
+        <div class="footer-subtitle">
+            Perfect for learning, playing, and growing together!
+        </div>
+        <div class="category-tags" style="justify-content: center;">
+            <span class="tag">Educational</span>
+            <span class="tag">Fun</span>
+            <span class="tag">Safe</span>
         </div>
     </div>
 
