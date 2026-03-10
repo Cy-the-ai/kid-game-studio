@@ -1,0 +1,1453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reading Adventure 🌟</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700&display=swap');
+
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            font-family: 'Baloo 2', cursive, sans-serif;
+            overflow: hidden;
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            border-radius: 30px;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .studio-title {
+            font-family: 'Fredoka One', cursive, sans-serif;
+            background: linear-gradient(45deg, #1a1a2e, #16213e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 4rem;
+            font-weight: 700;
+            margin: 0;
+            padding: 10px 30px;
+            border-radius: 50px;
+            display: inline-block;
+        }
+
+        .game-container {
+            background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+            border-radius: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            min-height: 500px;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .level-nav {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .level-btn {
+            background: linear-gradient(45deg, #1a1a2e, #16213e);
+            border: 3px solid #FFD700;
+            color: white;
+            font-weight: 700;
+            font-size: 1.5rem;
+            border-radius: 25px;
+            padding: 20px 40px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transition: all 0.3s;
+            min-width: 200px;
+            font-family: 'Baloo 2', cursive, sans-serif;
+        }
+
+        .level-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+        }
+
+        .level-btn.active {
+            background: linear-gradient(45deg, #FF6B6B 0%, #4ECDC4 100%);
+            border-color: #FFD700;
+            transform: scale(1.05);
+        }
+
+        .level-btn.active:hover {
+            transform: scale(1.05) translateY(-3px);
+        }
+
+        .level-icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .level-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin: 10px 0 0 10px 0;
+            color: white;
+        }
+
+        .level-status {
+            font-size: 1rem;
+            color: #FFD700;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        /* Level 1: ABCs */
+        .letter-display-container {
+            background: white;
+            border-radius: 25px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            margin-bottom: 20px;
+            position: relative;
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .target-letter {
+            font-family: 'Fredoka One', cursive, sans-serif;
+            font-size: 10rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            width: 150px;
+            height: 150px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            animation: pulse-glow 2s ease-in-out infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% {
+                box-shadow: 0 10px 30px rgba(255,215,0,0.3);
+            }
+            50% {
+                box-shadow: 0 20px 50px rgba(255,215,0,0.5);
+            }
+        }
+
+        .instruction {
+            font-size: 1.2rem;
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .letters-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .letter-tile {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(145deg, #667eea 0%, #764ba2 100%);
+            border: 4px solid #FFD700;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+            font-weight: 700;
+            font-family: 'Baloo 2', cursive, sans-serif;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .letter-tile::before {
+            content: '';
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            right: 5px;
+            bottom: 5px;
+            border: 3px dashed rgba(255,215,0,0.3);
+            border-radius: 15px;
+            pointer-events: none;
+        }
+
+        .letter-tile.correct {
+            background: linear-gradient(145deg, #28a745 0%, #20c997 100%) !important;
+            border-color: #28a745;
+            animation: success-bounce 0.5s;
+        }
+
+        .letter-tile.wrong {
+            background: linear-gradient(145deg, #FF6B6B 0%, #4ECDC4 100%) !important;
+            border-color: #FF6B6B;
+            animation: shake 0.5s;
+        }
+
+        .letter-tile.target-letter::after {
+            content: '🎯';
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            bottom: 5px;
+            font-size: 1.5rem;
+        }
+
+        @keyframes success-bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-5px); }
+            40%, 80% { transform: translateX(5px); }
+        }
+
+        /* Level 2: Counting */
+        .counting-display {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .count-box {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            text-align: center;
+            min-width: 200px;
+        }
+
+        .count-number {
+            font-family: 'Baloo 2', cursive, sans-serif;
+            font-size: 8rem;
+            font-weight: 700;
+            color: #FFD700;
+            margin-bottom: 20px;
+        }
+
+        .count-instruction {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .objects-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .counting-object {
+            width: 90px;
+            height: 90px;
+            background: linear-gradient(145deg, #FFB6B6 0%, #4ECDC4 100%);
+            border: 3px solid #FFB6B6;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .counting-object::before {
+            content: '';
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            right: 5px;
+            bottom: 5px;
+            border: 2px dashed rgba(255,182,193,0.3);
+            border-radius: 12px;
+            pointer-events: none;
+        }
+
+        .counting-object.counted {
+            background: linear-gradient(145deg, #28a745 0%, #20c997 100%) !important;
+            border-color: #28a745;
+            animation: pop-in 0.3s;
+            cursor: default;
+        }
+
+        .counting-object:active {
+            transform: scale(0.95);
+        }
+
+        .counting-object.uncountable {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        @keyframes pop-in {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .current-count {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        /* Level 3: Words */
+        .word-hint-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            padding: 25px 30px;
+            margin-bottom: 20px;
+            color: white;
+            text-align: center;
+        }
+
+        .word-display {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            min-height: 200px;
+            margin-bottom: 20px;
+        }
+
+        .word-slots {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .word-slot {
+            width: 80px;
+            height: 80px;
+            background: #f0f0f0;
+            border: 3px dashed #FFD700;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            font-weight: 700;
+            color: #FFD700;
+            font-family: 'Baloo 2', cursive, sans-serif;
+            transition: all 0.3s;
+        }
+
+        .word-slot.filled {
+            background: linear-gradient(145deg, #28a745 0%, #20c997 100%);
+            border: 3px solid #28a745;
+            border-style: solid;
+            animation: letter-appear 0.3s;
+        }
+
+        .word-slot.correct {
+            background: linear-gradient(145deg, #28a745 0%, #20c997 100%) !important;
+            border-color: #28a745;
+        }
+
+        .word-slot.wrong {
+            background: linear-gradient(145deg, #FF6B6B 0%, #4ECDC4 100%) !important;
+            border-color: #FF6B6B;
+            animation: shake 0.5s;
+        }
+
+        @keyframes letter-appear {
+            0% {
+                transform: scale(0) rotate(-10deg);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.2) rotate(5deg);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+        }
+
+        .letter-pool {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
+        .letter-tile-word {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(145deg, #667eea 0%, #764ba2 100%);
+            border: 3px solid #FFD700;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            font-weight: 700;
+            font-family: 'Baloo 2', cursive, sans-serif;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .letter-tile-word.selected {
+            background: linear-gradient(145deg, #28a745 0%, #20c997 100%) !important;
+            border-color: #28a745;
+            transform: scale(1.05);
+            cursor: default;
+        }
+
+        .letter-tile-word::before {
+            content: '';
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            right: 5px;
+            bottom: 5px;
+            border: 2px dashed rgba(255,215,0,0.3);
+            border-radius: 12px;
+            pointer-events: none;
+        }
+
+        .letter-tile-word.counted {
+            background: #f0f0f0 !important;
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        /* Progress & Stars */
+        .progress-container {
+            background: rgba(255,255,255,0.9);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .progress-title {
+            font-size: 1.5rem;
+            color: #1a1a2e;
+            font-weight: 700;
+            margin-bottom: 15px;
+            font-family: 'Baloo 2', cursive, sans-serif;
+        }
+
+        .stars-display {
+            font-size: 2.5rem;
+            color: #FFD700;
+            margin-bottom: 15px;
+            font-weight: 700;
+            font-family: 'Baloo 2', cursive, sans-serif;
+        }
+
+        .progress-bar {
+            background: #e0e0e0;
+            border-radius: 10px;
+            height: 30px;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto 30px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #FFD700 0%, #FFA500 100%);
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s ease-out;
+            border-radius: 10px;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .control-btn {
+            background: linear-gradient(45deg, #1a1a2e 0%, #16213e 100%);
+            border: 3px solid #FFD700;
+            color: white;
+            font-weight: 700;
+            font-size: 1.2rem;
+            border-radius: 25px;
+            padding: 15px 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transition: all 0.3s;
+            font-family: 'Baloo 2', cursive, sans-serif;
+            cursor: pointer;
+            min-width: 150px;
+        }
+
+        .control-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+        }
+
+        .control-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Timer */
+        .timer {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #FF6B6B;
+            font-family: 'Baloo 2', cursive, sans-serif;
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px 30px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+            display: inline-block;
+            min-width: 200px;
+        }
+
+        .timer.warning {
+            color: #FFD700;
+            animation: pulse 1s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        /* Bonus Round */
+        .bonus-round {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            border-radius: 30px;
+            padding: 30px;
+            margin-bottom: 30px;
+            text-align: center;
+            color: white;
+            animation: bonus-appear 0.5s;
+        }
+
+        .bonus-icon {
+            font-size: 5rem;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .bonus-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            font-family: 'Baloo 2', cursive, sans-serif;
+        }
+
+        .bonus-stars {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        @keyframes bonus-appear {
+            0% {
+                transform: scale(0) rotate(-10deg);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.2) rotate(5deg);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+        }
+
+        /* Streak */
+        .streak-display {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+            background: white;
+            padding: 25px 30px;
+            border-radius: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+            flex-wrap: wrap;
+        }
+
+        .streak-icon {
+            font-size: 3rem;
+        }
+
+        .streak-count {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #FFD700;
+            font-family: 'Baloo 2', cursive, sans-serif;
+        }
+
+        .streak-label {
+            font-size: 1rem;
+            color: #666;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        /* Confetti */
+        .confetti {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        .confetti-piece {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            animation: confetti-fall 3s linear forwards;
+        }
+
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* Success Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 30px;
+            padding: 40px;
+            max-width: 600px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+            animation: modal-appear 0.3s;
+        }
+
+        @keyframes modal-appear {
+            0% {
+                transform: scale(0.8) translateY(-20px);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1) translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-title {
+            font-family: 'Baloo 2', cursive, sans-serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 20px;
+        }
+
+        .modal-message {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .modal-stars {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .modal-stickers {
+            font-size: 2rem;
+            margin-bottom: 30px;
+        }
+
+        .modal-btn {
+            background: linear-gradient(45deg, #1a1a2e 0%, #16213e 100%);
+            border: 3px solid #FFD700;
+            color: white;
+            font-weight: 700;
+            font-size: 1.3rem;
+            border-radius: 25px;
+            padding: 15px 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Baloo 2', cursive, sans-serif;
+        }
+
+        .modal-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .level-btn {
+                font-size: 1.2rem;
+                padding: 15px 25px;
+            }
+
+            .level-icon {
+                font-size: 2.5rem;
+            }
+
+            .level-title {
+                font-size: 1.5rem;
+            }
+
+            .letter-tile {
+                width: 80px;
+                height: 80px;
+                font-size: 4rem;
+            }
+
+            .counting-object {
+                width: 80px;
+                height: 80px;
+                font-size: 3rem;
+            }
+
+            .letter-tile-word {
+                width: 70px;
+                height: 70px;
+                font-size: 2.5rem;
+            }
+
+            .word-slot {
+                width: 70px;
+                height: 70px;
+                font-size: 2.5rem;
+            }
+
+            .control-btn {
+                font-size: 1.1rem;
+                padding: 12px 25px;
+                min-width: 120px;
+            }
+
+            .modal-content {
+                padding: 30px;
+            }
+
+            .timer {
+                font-size: 1.5rem;
+                padding: 15px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero-section">
+        <div class="studio-title">🌟 Reading Adventure</div>
+    </div>
+
+    <div class="game-container">
+        <button onclick="goBack()" style="background: linear-gradient(45deg, rgba(255,255,255,0.2), rgba(255,255,255,0.2)); border: 2px solid white; color: #333; font-weight: 600; font-family: 'Baloo 2', cursive, sans-serif; border-radius: 20px; padding: 10px 20px; margin-bottom: 20px; cursor: pointer; transition: all 0.3s;">
+            <i class="fas fa-arrow-left" style="margin-right: 10px;"></i> Back
+        </button>
+
+        <h2 class="level-title">🎮 Choose Your Challenge!</h2>
+
+        <div class="level-nav">
+            <button class="level-btn" onclick="startLevel(1)" id="level1-btn">
+                <div class="level-icon">🔤</div>
+                <div class="level-title">ABCs</div>
+                <div class="level-status" id="level1-status">★ Beginner</div>
+            </button>
+            <button class="level-btn" onclick="startLevel(2)" id="level2-btn">
+                <div class="level-icon">🔢</div>
+                <div class="level-title">Counting</div>
+                <div class="level-status" id="level2-status">★ Beginner</div>
+            </button>
+            <button class="level-btn" onclick="startLevel(3)" id="level3-btn">
+                <div class="level-icon">📝</div>
+                <div class="level-title">Words</div>
+                <div class="level-status" id="level3-status">★ Beginner</div>
+            </button>
+        </div>
+
+        <!-- Progress -->
+        <div class="progress-container">
+            <div class="progress-title">Your Progress</div>
+            <div class="stars-display" id="total-stars">0 ⭐</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="overall-progress"></div>
+            </div>
+        </div>
+
+        <!-- Level 1: ABCs -->
+        <div id="level1-content" style="display: none;">
+            <div class="instruction" id="abc-instruction">Find the letter!</div>
+
+            <div class="letter-display-container">
+                <div class="target-letter" id="target-letter">A</div>
+            </div>
+
+            <div class="letters-grid" id="abc-grid">
+                <!-- Letters will be generated here -->
+            </div>
+
+            <div class="controls">
+                <button class="control-btn" onclick="checkAnswerABC()" id="abc-check-btn">
+                    <i class="fas fa-check"></i> Check
+                </button>
+            </div>
+        </div>
+
+        <!-- Level 2: Counting -->
+        <div id="level2-content" style="display: none;">
+            <div class="counting-display">
+                <div class="count-box">
+                    <div class="count-number" id="count-target">5</div>
+                </div>
+                <div class="count-box">
+                    <div class="current-count" id="current-count">0</div>
+                </div>
+            </div>
+
+            <div class="instruction" id="count-instruction">Tap the objects to count!</div>
+
+            <div class="objects-grid" id="counting-grid">
+                <!-- Objects will be generated here -->
+            </div>
+
+            <div class="controls">
+                <div class="timer" id="timer">⏱️</div>
+                <button class="control-btn" onclick="checkCount()" id="count-check-btn">
+                        <i class="fas fa-check"></i> Check
+                    </button>
+            </div>
+        </div>
+
+        <!-- Level 3: Words -->
+        <div id="level3-content" style="display: none;">
+            <div class="word-hint-box">
+                <div class="bonus-icon" id="word-icon">📝</div>
+                <div class="bonus-title" id="word-hint">Click Start to begin!</div>
+            </div>
+
+            <div class="word-display">
+                <div class="word-slots" id="word-slots">
+                    <div class="word-slot">_</div>
+                    <div class="word-slot">_</div>
+                    <div class="word-slot">_</div>
+                </div>
+            </div>
+
+            <div class="letter-pool" id="letter-pool">
+                <!-- Letter tiles will be generated here -->
+            </div>
+
+            <div class="controls">
+                <button class="control-btn" onclick="checkWord()" id="word-check-btn">
+                        <i class="fas fa-check"></i> Check
+                    </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confetti Container -->
+    <div class="confetti" id="confetti"></div>
+
+    <!-- Success Modal -->
+    <div class="modal-overlay" id="success-modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-title">🎉 Amazing!</div>
+            <div class="modal-message" id="modal-message">You completed the challenge!</div>
+            <div class="modal-stars" id="modal-stars">⭐⭐⭐</div>
+            <button class="modal-btn" onclick="closeModal()">
+                        <i class="fas fa-play"></i> Continue
+                    </button>
+        </div>
+    </div>
+
+    <script>
+        // Game State
+        let currentLevel = 1;
+        let totalStars = parseInt(localStorage.getItem('readingAdventureStars')) || 0;
+        let levelProgress = JSON.parse(localStorage.getItem('readingAdventureLevelProgress')) || {1: 0, 2: 0, 3: 0};
+        let streak = parseInt(localStorage.getItem('readingAdventureStreak')) || 0;
+        let timerInterval = null;
+        let timeLeft = 0;
+
+        // Level 1: ABCs
+        let targetLetter = 'A';
+        let letters = [];
+        let correctLetter = '';
+        let abcIndex = 0;
+        const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+        // Level 2: Counting
+        let countTarget = 5;
+        let currentCount = 0;
+        let countingObjects = [];
+        let objectsToCount = [];
+        let countingRound = 0;
+        const countingRounds = 5;
+
+        // Level 3: Words
+        const words = ['CAT', 'DOG', 'SUN', 'COW', 'FOX', 'FISH', 'BIRD', 'MOON', 'STAR', 'FROG'];
+        const wordHints = {
+            'CAT': 'A pet that says meow',
+            'DOG': "Man's best friend, barks",
+            'SUN': 'Bright star in the sky',
+            'COW': 'Moo! Farm animal',
+            'FOX': 'Clever orange animal',
+            'FISH': 'Swims in water',
+            'BIRD': 'Flies in the sky',
+            'MOON': 'Lights up the night',
+            'STAR': 'Twinkle, twinkle!',
+            'FROG': 'Green, jumps and croaks'
+        };
+        let currentWord = '';
+        let currentLetters = [];
+        let wordIndex = 0;
+        const wordsPerLevel = 10;
+
+        // Decorations
+        const decorations = ['🌸', '🌻', '🍀', '🌺', '🦋', '🌈', '⭐', '🍪', '🌴', '🦜'];
+
+        // Initialize
+        document.getElementById('total-stars').textContent = totalStars + ' ⭐';
+        updateOverallProgress();
+        updateLevelButtons();
+
+        function goBack() {
+            document.getElementById('level1-content').style.display = 'none';
+            document.getElementById('level2-content').style.display = 'none';
+            document.getElementById('level3-content').style.display = 'none';
+            document.querySelector('.level-title').textContent = '🎮 Choose Your Challenge!';
+            document.querySelector('.level-nav').style.display = 'flex';
+            document.querySelector('.progress-container').style.display = 'block';
+            stopTimer();
+        }
+
+        function startLevel(level) {
+            currentLevel = level;
+            document.getElementById('level' + level + '-content').style.display = 'block';
+            document.getElementById('level' + (level === 1 ? '2' : (level === 2 ? '3' : '1') + '-content').style.display = 'none';
+            document.querySelector('.level-nav').style.display = 'none';
+            document.querySelector('.progress-container').style.display = 'none';
+            clearConfetti();
+
+            if (level === 1) {
+                startABCLevel();
+            } else if (level === 2) {
+                startCountingLevel();
+            } else if (level === 3) {
+                startWordLevel();
+            }
+        }
+
+        function startABCLevel() {
+            // Generate new letters
+            targetLetter = alphabet[abcIndex % alphabet.length];
+            letters = [targetLetter];
+
+            // Add 3 distractors
+            while (letters.length < 4) {
+                const randomLetter = alphabet[Math.floor(Math.random() * alphabet.length)];
+                if (!letters.includes(randomLetter)) {
+                    letters.push(randomLetter);
+                }
+            }
+            letters.sort(() => Math.random() - 0.5);
+
+            // Update UI
+            document.getElementById('target-letter').textContent = targetLetter;
+            document.getElementById('abc-instruction').textContent = 'Find the letter ' + targetLetter + '!';
+
+            // Generate letter tiles
+            const grid = document.getElementById('abc-grid');
+            grid.innerHTML = '';
+
+            letters.forEach((letter, i) => {
+                const tile = document.createElement('div');
+                tile.className = 'letter-tile';
+                tile.textContent = letter;
+
+                if (letter === targetLetter) {
+                    tile.classList.add('target-letter');
+                }
+
+                tile.onclick = () => selectLetter(tile, letter);
+                grid.appendChild(tile);
+            });
+
+            // Update progress
+            const progress = ((abcIndex + 1) / 26) * 100;
+            document.getElementById('level1-status').textContent = getLevelStatus(levelProgress[1]);
+            updateOverallProgress();
+            speak('Find the letter ' + targetLetter + '!');
+        }
+
+        function selectLetter(tile, letter) {
+            if (letter === targetLetter) {
+                tile.classList.add('correct');
+                correctLetter = letter;
+                speak(letter);
+                checkAnswerABC();
+            } else {
+                tile.classList.add('wrong');
+                speak('Try again!');
+                setTimeout(() => {
+                    tile.classList.remove('wrong');
+                }, 500);
+            }
+        }
+
+        function checkAnswerABC() {
+            if (correctLetter === targetLetter) {
+                // Correct!
+                abcIndex++;
+
+                // Confetti
+                launchConfetti();
+
+                // Stars
+                totalStars++;
+                document.getElementById('total-stars').textContent = totalStars + ' ⭐';
+                levelProgress[1] = Math.min(levelProgress[1] + 1, 26);
+                localStorage.setItem('readingAdventureStars', totalStars);
+                localStorage.setItem('readingAdventureLevelProgress', JSON.stringify(levelProgress));
+                updateOverallProgress();
+
+                // Next letter
+                setTimeout(() => {
+                    clearConfetti();
+                    if (abcIndex < 26) {
+                        startABCLevel();
+                    } else {
+                        showSuccess();
+                    }
+                }, 2000);
+            } else {
+                // Wrong!
+                // Shake
+                const tiles = document.querySelectorAll('.letter-tile');
+                tiles.forEach(tile => {
+                    if (tile.classList.contains('correct')) {
+                        tile.classList.remove('correct');
+                    }
+                });
+                speak('Try again!');
+            }
+        }
+
+        function startCountingLevel() {
+            // Generate random target
+            countTarget = Math.floor(Math.random() * 5) + 3;
+            currentCount = 0;
+
+            // Update UI
+            document.getElementById('count-target').textContent = countTarget;
+            document.getElementById('current-count').textContent = '0';
+            document.getElementById('count-instruction').textContent = 'Tap ' + countTarget + ' objects to count!';
+            document.getElementById('level2-status').textContent = getLevelStatus(levelProgress[2]);
+            updateOverallProgress();
+
+            // Generate counting objects
+            objectsToCount = [];
+            countingObjects = [];
+
+            const emojis = ['🍎', '🎈', '🌸', '🌺', '🍀', '⭐', '🎪', '🌴', '🦜', '🎁'];
+            for (let i = 0; i < countTarget; i++) {
+                const obj = emojis[Math.floor(Math.random() * emojis.length)];
+                objectsToCount.push(obj);
+                countingObjects.push(false);
+            }
+
+            // Randomize positions
+            objectsToCount.sort(() => Math.random() - 0.5);
+
+            // Generate grid
+            const grid = document.getElementById('counting-grid');
+            grid.innerHTML = '';
+
+            objectsToCount.forEach((obj, i) => {
+                const countingObj = document.createElement('div');
+                countingObj.className = 'counting-object';
+                countingObj.textContent = obj;
+
+                countingObj.onclick = () => selectCountingObject(i);
+                grid.appendChild(countingObj);
+            });
+
+            // Start timer
+            startTimer(30);
+            speak('Count ' + countTarget + ' objects!');
+        }
+
+        function selectCountingObject(index) {
+            const obj = document.querySelectorAll('.counting-object');
+            if (!objectsToCount[index]) {
+                obj[index].classList.add('counted');
+                objectsToCount[index] = true;
+                currentCount++;
+                document.getElementById('current-count').textContent = currentCount;
+                speak(currentCount.toString());
+            }
+
+            if (currentCount === countTarget) {
+                // Check answer
+                checkCount();
+            }
+        }
+
+        function checkCount() {
+            if (currentCount === countTarget) {
+                stopTimer();
+
+                // Correct!
+                countingRound++;
+
+                // Confetti
+                launchConfetti();
+
+                // Stars
+                totalStars++;
+                document.getElementById('total-stars').textContent = totalStars + ' ⭐';
+                levelProgress[2] = Math.min(levelProgress[2] + 1, countingRounds);
+                localStorage.setItem('readingAdventureStars', totalStars);
+                localStorage.setItem('readingAdventureLevelProgress', JSON.stringify(levelProgress));
+                updateOverallProgress();
+
+                // Streak
+                streak++;
+                localStorage.setItem('readingAdventureStreak', streak);
+                speak('Great job!');
+
+                setTimeout(() => {
+                    clearConfetti();
+                    if (countingRound < countingRounds) {
+                        startCountingLevel();
+                    } else {
+                        showSuccess();
+                    }
+                }, 2000);
+            } else {
+                // Wrong!
+                speak('Try again!');
+            }
+        }
+
+        function startWordLevel() {
+            // Select random word
+            currentWord = words[wordIndex % words.length];
+            currentLetters = currentWord.split('').sort(() => Math.random() - 0.5);
+
+            // Update UI
+            document.getElementById('word-icon').textContent = '🧩';
+            document.getElementById('word-hint').textContent = wordHints[currentWord];
+            document.getElementById('word-check-btn').textContent = 'Spell ' + currentWord + '!';
+
+            // Update slots
+            const slots = document.getElementById('word-slots');
+            slots.innerHTML = '';
+            for (let i = 0; i < currentWord.length; i++) {
+                const slot = document.createElement('div');
+                slot.className = 'word-slot';
+                slot.textContent = '_';
+                slots.appendChild(slot);
+            }
+
+            // Generate letter pool
+            const pool = document.getElementById('letter-pool');
+            pool.innerHTML = '';
+
+            currentLetters.forEach((letter, i) => {
+                const tile = document.createElement('div');
+                tile.className = 'letter-tile-word';
+                tile.textContent = letter;
+                tile.dataset.index = i;
+
+                tile.onclick = () => selectLetterForWord(tile, letter);
+                pool.appendChild(tile);
+            });
+
+            // Update progress
+            const progress = ((wordIndex + 1) / wordsPerLevel) * 100;
+            document.getElementById('level3-status').textContent = getLevelStatus(levelProgress[3]);
+            updateOverallProgress();
+
+            speak('Spell ' + currentWord + '!');
+        }
+
+        function selectLetterForWord(tile, letter) {
+            if (tile.classList.contains('selected')) return;
+
+            const slots = document.querySelectorAll('.word-slot');
+            const currentIndex = currentWord.length;
+
+            if (currentIndex < slots.length) {
+                slots[currentIndex].textContent = letter;
+                tile.classList.add('selected');
+                tile.classList.add('counted');
+                currentWord += letter;
+
+                // Next letter
+                currentIndex++;
+
+                if (currentIndex === currentWord.length) {
+                    checkWord();
+                }
+            }
+        }
+
+        function checkWord() {
+            const slots = document.querySelectorAll('.word-slot');
+            let correct = true;
+
+            for (let i = 0; i < currentWord.length; i++) {
+                if (slots[i].textContent !== currentWord[i]) {
+                    slots[i].classList.add('wrong');
+                    correct = false;
+                }
+            }
+
+            if (correct) {
+                // Correct!
+                wordIndex++;
+
+                // Confetti
+                launchConfetti();
+
+                // Stars
+                totalStars++;
+                document.getElementById('total-stars').textContent = totalStars + ' ⭐';
+                levelProgress[3] = Math.min(levelProgress[3] + 1, wordsPerLevel);
+                localStorage.setItem('readingAdventureStars', totalStars);
+                localStorage.setItem('readingAdventureLevelProgress', JSON.stringify(levelProgress));
+                updateOverallProgress();
+
+                // Streak
+                streak++;
+                localStorage.setItem('readingAdventureStreak', streak);
+                speak('Excellent!');
+
+                setTimeout(() => {
+                    clearConfetti();
+                    if (wordIndex < wordsPerLevel) {
+                        startWordLevel();
+                    } else {
+                        showSuccess();
+                    }
+                }, 2000);
+            } else {
+                // Wrong!
+                speak('Try again!');
+            }
+        }
+
+        function showSuccess() {
+            const modal = document.getElementById('success-modal');
+            modal.style.display = 'flex';
+
+            document.getElementById('modal-message').textContent = getLevelSuccessMessage();
+            document.getElementById('modal-stars').textContent = '⭐'.repeat(Math.min(streak, 3));
+
+            // Confetti
+            launchConfetti();
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('success-modal');
+            modal.style.display = 'none';
+            clearConfetti();
+
+            // Reset to menu
+            goBack();
+        }
+
+        function launchConfetti() {
+            const confetti = document.getElementById('confetti');
+            confetti.innerHTML = '';
+
+            const colors = ['#FFD700', '#FF6B6B', '#4ECDC4', '#FFA500', '#FF8E53'];
+            const shapes = ['■', '●', '▲', '★', '♦'];
+
+            for (let i = 0; i < 150; i++) {
+                const piece = document.createElement('div');
+                piece.className = 'confetti-piece';
+                piece.style.left = Math.random() * 100 + '%';
+                piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                piece.style.borderRadius = shapes[Math.floor(Math.random() * shapes.length)] === '■' ? '0' : '50%';
+                piece.style.width = (Math.random() * 10 + 5) + 'px';
+                piece.style.height = (Math.random() * 10 + 5) + 'px';
+                piece.style.animationDelay = (Math.random() * 5) + 's';
+                piece.style.animationDuration = (Math.random() * 3 + 2) + 's';
+
+                confetti.appendChild(piece);
+            }
+
+            setTimeout(() => {
+                confetti.innerHTML = '';
+            }, 5000);
+        }
+
+        function clearConfetti() {
+            document.getElementById('confetti').innerHTML = '';
+        }
+
+        function startTimer(seconds) {
+            timeLeft = seconds;
+            document.getElementById('timer').classList.add('warning');
+            updateTimer();
+
+            if (timerInterval) {
+                clearInterval(timerInterval);
+            }
+
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateTimer();
+
+                if (timeLeft <= 0) {
+                    stopTimer();
+                    // Time's up!
+                    speak('Time is up!');
+                    checkCount(); // Auto-check for counting level
+                }
+            }, 1000);
+        }
+
+        function stopTimer() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+
+            document.getElementById('timer').classList.remove('warning');
+        }
+
+        function updateTimer() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            document.getElementById('timer').textContent = (minutes > 0 ? minutes + ':' : '') + seconds.toString().padStart(2, '0');
+        }
+
+        function updateOverallProgress() {
+            const totalLevels = 3;
+            const totalTasks = 26 + countingRounds + wordsPerLevel;
+            const completed = levelProgress[1] + levelProgress[2] + levelProgress[3];
+            const progress = (completed / totalTasks) * 100;
+
+            document.getElementById('overall-progress').style.width = progress + '%';
+        }
+
+        function updateLevelButtons() {
+            for (let i = 1; i <= 3; i++) {
+                const btn = document.getElementById('level' + i + '-btn');
+                btn.classList.remove('active');
+
+                if (levelProgress[i] > 0) {
+                    btn.classList.add('active');
+                }
+            }
+        }
+
+        function getLevelStatus(stars) {
+            if (stars === 0) {
+                return '★ Beginner';
+            } else if (stars >= 26) {
+                return '★★★★★ Master';
+            } else if (stars >= 13) {
+                return '★★★ Expert';
+            } else {
+                return '★★ Intermediate';
+            }
+        }
+
+        function getLevelSuccessMessage() {
+            const messages = {
+                1: 'You mastered your ABCs! Time to learn reading!',
+                2: 'You\'re a counting champion! Ready for bigger numbers!',
+                3: 'You\'re a word wizard! Amazing spelling skills!'
+            };
+
+            return messages[currentLevel];
+        }
+
+        function speak(text) {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.rate = 0.8;
+                utterance.pitch = 1.2;
+                speechSynthesis.speak(utterance);
+            }
+        }
+    </script>
+</body>
+</html>
