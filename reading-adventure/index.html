@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Reading Adventure 🌟</title>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700&display=swap" rel="stylesheet">
@@ -12,20 +12,34 @@
         @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700&display=swap');
 
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+
+        html, body {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
         body {
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
             min-height: 100vh;
             font-family: 'Baloo 2', cursive, sans-serif;
-            overflow: hidden;
         }
 
         .hero-section {
             background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
             border-radius: 30px;
-            padding: 40px;
+            padding: clamp(20px, 4vw, 40px);
             text-align: center;
             position: relative;
             box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            max-width: 1400px;
+            margin: 0 auto;
         }
 
         .studio-title {
@@ -34,10 +48,10 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            font-size: 4rem;
+            font-size: clamp(2rem, 5vw, 4rem);
             font-weight: 700;
             margin: 0;
-            padding: 10px 30px;
+            padding: clamp(5px, 2vw, 10px) clamp(15px, 4vw, 30px);
             border-radius: 50px;
             display: inline-block;
         }
@@ -46,10 +60,13 @@
             background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
             border-radius: 30px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-            min-height: 500px;
-            padding: 20px;
+            min-height: 50vh;
+            max-height: 80vh;
+            padding: clamp(10px, 2vw, 20px);
             position: relative;
             overflow: hidden;
+            max-width: 1400px;
+            margin: 0 auto;
         }
 
         .level-nav {
@@ -126,14 +143,14 @@
 
         .target-letter {
             font-family: 'Fredoka One', cursive, sans-serif;
-            font-size: 10rem;
+            font-size: clamp(4rem, 12vw, 10rem);
             font-weight: 700;
             background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            width: 150px;
-            height: 150px;
+            width: clamp(100px, 20vw, 150px);
+            height: clamp(100px, 20vw, 150px);
             border-radius: 20px;
             display: flex;
             align-items: center;
@@ -168,15 +185,15 @@
         }
 
         .letter-tile {
-            width: 100px;
-            height: 100px;
+            width: clamp(60px, 12vw, 100px);
+            height: clamp(60px, 12vw, 100px);
             background: linear-gradient(145deg, #667eea 0%, #764ba2 100%);
-            border: 4px solid #FFD700;
+            border: 3px solid #FFD700;
             border-radius: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 5rem;
+            font-size: clamp(2.5rem, 6vw, 5rem);
             font-weight: 700;
             font-family: 'Baloo 2', cursive, sans-serif;
             color: white;
@@ -273,15 +290,15 @@
         }
 
         .counting-object {
-            width: 90px;
-            height: 90px;
+            width: clamp(60px, 12vw, 90px);
+            height: clamp(60px, 12vw, 90px);
             background: linear-gradient(145deg, #FFB6B6 0%, #4ECDC4 100%);
             border: 3px solid #FFB6B6;
             border-radius: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 4rem;
+            font-size: clamp(2rem, 5vw, 4rem);
             cursor: pointer;
             transition: all 0.3s;
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
@@ -362,15 +379,15 @@
         }
 
         .word-slot {
-            width: 80px;
-            height: 80px;
+            width: clamp(50px, 10vw, 80px);
+            height: clamp(50px, 10vw, 80px);
             background: #f0f0f0;
             border: 3px dashed #FFD700;
             border-radius: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 3rem;
+            font-size: clamp(1.5rem, 4vw, 3rem);
             font-weight: 700;
             color: #FFD700;
             font-family: 'Baloo 2', cursive, sans-serif;
@@ -419,15 +436,15 @@
         }
 
         .letter-tile-word {
-            width: 80px;
-            height: 80px;
+            width: clamp(50px, 10vw, 80px);
+            height: clamp(50px, 10vw, 80px);
             background: linear-gradient(145deg, #667eea 0%, #764ba2 100%);
             border: 3px solid #FFD700;
             border-radius: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 3rem;
+            font-size: clamp(1.5rem, 4vw, 3rem);
             font-weight: 700;
             font-family: 'Baloo 2', cursive, sans-serif;
             color: white;
@@ -752,58 +769,138 @@
             box-shadow: 0 10px 25px rgba(0,0,0,0.4);
         }
 
-        /* Responsive */
-        @media (max-width: 768px) {
+        /* Mobile Portrait (up to 480px width) */
+        @media (max-width: 480px) and (orientation: portrait) {
             .level-btn {
-                font-size: 1.2rem;
-                padding: 15px 25px;
+                font-size: 1rem;
+                padding: 12px 20px;
+                min-width: 140px;
             }
 
             .level-icon {
-                font-size: 2.5rem;
+                font-size: 2rem;
             }
 
             .level-title {
-                font-size: 1.5rem;
+                font-size: 1.3rem;
             }
 
-            .letter-tile {
-                width: 80px;
-                height: 80px;
-                font-size: 4rem;
+            .letter-display-container {
+                min-height: 200px;
             }
 
-            .counting-object {
-                width: 80px;
-                height: 80px;
-                font-size: 3rem;
-            }
-
-            .letter-tile-word {
-                width: 70px;
-                height: 70px;
-                font-size: 2.5rem;
-            }
-
-            .word-slot {
-                width: 70px;
-                height: 70px;
-                font-size: 2.5rem;
+            .progress-bar {
+                max-width: 100%;
             }
 
             .control-btn {
-                font-size: 1.1rem;
-                padding: 12px 25px;
-                min-width: 120px;
+                font-size: 1rem;
+                padding: 12px 20px;
+                min-width: 110px;
             }
 
             .modal-content {
-                padding: 30px;
+                padding: 20px;
+                max-width: 90%;
+            }
+
+            .modal-title {
+                font-size: 2rem;
             }
 
             .timer {
+                font-size: 1.3rem;
+                padding: 12px 15px;
+                min-width: 150px;
+            }
+        }
+
+        /* Mobile Landscape (480-768px width, height constrained) */
+        @media (max-width: 768px) and (orientation: landscape) {
+            body {
+                min-height: 100vh;
+            }
+
+            .game-container {
+                min-height: 40vh;
+                padding: 10px;
+            }
+
+            .hero-section {
+                padding: 10px 15px;
+            }
+
+            .studio-title {
+                font-size: 1.8rem;
+                padding: 5px 15px;
+            }
+
+            .level-btn {
+                padding: 10px 15px;
+                min-width: 120px;
+            }
+
+            .level-icon {
+                font-size: 1.8rem;
+            }
+
+            .letter-display-container {
+                min-height: 150px;
+            }
+
+            .timer {
+                font-size: 1.2rem;
+                padding: 8px 12px;
+                min-width: 120px;
+            }
+        }
+
+        /* Tablet (768-1024px) */
+        @media (min-width: 768px) and (max-width: 1024px) {
+            .level-btn {
+                font-size: 1.3rem;
+                padding: 18px 35px;
+                min-width: 180px;
+            }
+
+            .letter-display-container {
+                min-height: 280px;
+            }
+
+            .modal-content {
+                max-width: 500px;
+            }
+        }
+
+        /* Desktop (1024px+) */
+        @media (min-width: 1024px) {
+            .level-btn {
                 font-size: 1.5rem;
-                padding: 15px 20px;
+                padding: 20px 40px;
+                min-width: 200px;
+            }
+
+            .letter-display-container {
+                min-height: 350px;
+            }
+
+            .modal-content {
+                max-width: 600px;
+            }
+        }
+
+        /* Ultrawide (1440px+) */
+        @media (min-width: 1440px) {
+            .game-container {
+                max-width: 1600px;
+            }
+
+            .hero-section {
+                max-width: 1600px;
+            }
+
+            .progress-bar {
+                max-width: 700px;
             }
         }
     </style>
